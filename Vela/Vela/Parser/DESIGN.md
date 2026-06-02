@@ -86,6 +86,17 @@ Expression
 This is why the parser is called recursive descent: it starts from a broad rule
 and descends into smaller rules.
 
+Array literals are primary expressions too:
+
+```js
+[x, y + 1, foo()]
+```
+
+Their elements are parsed with `LogicalOrExpression`, not
+`AssignmentExpression`. This keeps value construction from accepting assignment
+syntax inside array elements, so `[y = 2]` is rejected while expressions such as
+`[y || z, x + 1]` remain valid.
+
 The OOP additions follow the same model. `statementBuilder()` routes `class` to
 a class-declaration parser, while `primaryExpressionBuilder()` routes `this` and
 `new` to expression parsers:

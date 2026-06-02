@@ -758,6 +758,64 @@ struct VelaParserTests {
     #expect(try numericValue(secondArgument.right) == 2)
   }
 
+  @Test func parsesArrayLiteralExpression() throws {
+    let program = try parseProgram("[x, y + 2, foo(z)];")
+    let expression = try expressionStatementValue(program.body[0])
+
+    let array = try arrayLiteral(expression)
+    #expect(array.elements.count == 3)
+    #expect(try identifierValue(array.elements[0]) == "x")
+
+    let secondElement = try binaryExpression(array.elements[1])
+    #expect(secondElement.operatorValue == "+")
+    #expect(try identifierValue(secondElement.left) == "y")
+    #expect(try numericValue(secondElement.right) == 2)
+
+    let thirdElement = try funcCallExpression(array.elements[2])
+    #expect(try identifierValue(thirdElement.callee) == "foo")
+    #expect(thirdElement.arguments.count == 1)
+    #expect(try identifierValue(thirdElement.arguments[0]) == "z")
+  }
+
+  @Test func parsesEmptyArrayLiteralExpression() throws {
+    let program = try parseProgram("[];")
+    let expression = try expressionStatementValue(program.body[0])
+
+    let array = try arrayLiteral(expression)
+    #expect(array.elements.isEmpty)
+  }
+
+  @Test func parsesArrayLiteralAsCallArgument() throws {
+    let program = try parseProgram("graph.run([x, y, z], t1, t2);")
+    let expression = try expressionStatementValue(program.body[0])
+
+    let call = try funcCallExpression(expression)
+    #expect(call.arguments.count == 3)
+
+    let callee = try memberExpression(call.callee)
+    #expect(callee.computed == false)
+    #expect(try identifierValue(callee.object) == "graph")
+    #expect(try identifierValue(callee.property) == "run")
+
+    let firstArgument = try arrayLiteral(call.arguments[0])
+    #expect(firstArgument.elements.count == 3)
+    #expect(try identifierValue(firstArgument.elements[0]) == "x")
+    #expect(try identifierValue(firstArgument.elements[1]) == "y")
+    #expect(try identifierValue(firstArgument.elements[2]) == "z")
+    #expect(try identifierValue(call.arguments[1]) == "t1")
+    #expect(try identifierValue(call.arguments[2]) == "t2")
+  }
+
+  @Test func parseFailsForAssignmentInArrayLiteralElement() throws {
+    let parser = Parser()
+
+    let program = try parser.parse("[y = 2];")
+
+    #expect(program == nil)
+    #expect(parser.results.contains("Unexpected token"))
+    #expect(parser.results.contains("SIMPLE_ASSIGNMENT"))
+  }
+
   @Test func parsesMemberCallExpression() throws {
     let program = try parseProgram("object.method();")
     let expression = try expressionStatementValue(program.body[0])
@@ -1238,6 +1296,15 @@ private func funcCallExpression(_ expression: Expression) throws -> FuncCallExpr
   }
 
   return funcCallExpression
+}
+
+private func arrayLiteral(_ expression: Expression) throws -> ArrayLiteral {
+  guard case let .arrayLiteral(arrayLiteral) = expression else {
+    Issue.record("Expected ArrayLiteral")
+    throw TestFailure()
+  }
+
+  return arrayLiteral
 }
 
 private func newExpression(_ expression: Expression) throws -> NewExpression {

@@ -11,6 +11,7 @@ extension Parser {
   // PrimaryExpression
   //   : Literal
   //   | ParenthesizedExpression
+  //   | ArrayLiteral
   //   | Identifier
   //   | ThisExpression
   //   | NewExpression
@@ -22,6 +23,7 @@ extension Parser {
   // `true`
   // `x`
   // `(1 + 2)`
+  // `[x, y + 1]`
   // `this`
   // `new Point(1, 2)`
   func primaryExpressionBuilder() throws -> Expression {
@@ -31,6 +33,8 @@ extension Parser {
     switch lookahead?.type {
     case .LEFT_BRACE:
       return try parenthesizedExpressionBuilder()
+    case .LEFT_SQUARE_BRACKET:
+      return try arrayLiteralBuilder()
     case .IDENTIFIER:
       return try identifierBuilder()
     case .KEYWORD(keyword: "this"):
@@ -38,7 +42,7 @@ extension Parser {
     case .KEYWORD(keyword: "new"):
       return try newExpressionBuilder()
     default:
-      return try leftHandSideExpressionBuilder()
+      throw ParserError.unexpectedExpressionToken(actual: lookahead?.type)
     }
   }
 }

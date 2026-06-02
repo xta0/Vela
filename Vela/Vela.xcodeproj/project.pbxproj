@@ -6,6 +6,49 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		452F84CC2FCEA06600697B5E /* Assignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84A52FCEA06600697B5E /* Assignment.swift */; };
+		452F84CD2FCEA06600697B5E /* Binary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84A62FCEA06600697B5E /* Binary.swift */; };
+		452F84CE2FCEA06600697B5E /* Equality.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84A72FCEA06600697B5E /* Equality.swift */; };
+		452F84CF2FCEA06600697B5E /* Expression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84A82FCEA06600697B5E /* Expression.swift */; };
+		452F84D02FCEA06600697B5E /* Extend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84A92FCEA06600697B5E /* Extend.swift */; };
+		452F84D12FCEA06600697B5E /* Identifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84AA2FCEA06600697B5E /* Identifier.swift */; };
+		452F84D22FCEA06600697B5E /* LHS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84AB2FCEA06600697B5E /* LHS.swift */; };
+		452F84D32FCEA06600697B5E /* Literal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84AC2FCEA06600697B5E /* Literal.swift */; };
+		452F84D42FCEA06600697B5E /* Logical.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84AD2FCEA06600697B5E /* Logical.swift */; };
+		452F84D52FCEA06600697B5E /* New.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84AE2FCEA06600697B5E /* New.swift */; };
+		452F84D62FCEA06600697B5E /* Parenthesize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84AF2FCEA06600697B5E /* Parenthesize.swift */; };
+		452F84D72FCEA06600697B5E /* Primary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84B02FCEA06600697B5E /* Primary.swift */; };
+		452F84D82FCEA06600697B5E /* Relational.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84B12FCEA06600697B5E /* Relational.swift */; };
+		452F84D92FCEA06600697B5E /* This.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84B22FCEA06600697B5E /* This.swift */; };
+		452F84DA2FCEA06600697B5E /* Unary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84B32FCEA06600697B5E /* Unary.swift */; };
+		452F84DB2FCEA06600697B5E /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84B52FCEA06600697B5E /* Block.swift */; };
+		452F84DC2FCEA06600697B5E /* Class.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84B62FCEA06600697B5E /* Class.swift */; };
+		452F84DD2FCEA06600697B5E /* Empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84B72FCEA06600697B5E /* Empty.swift */; };
+		452F84DE2FCEA06600697B5E /* ExpressionStatement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84B82FCEA06600697B5E /* ExpressionStatement.swift */; };
+		452F84DF2FCEA06600697B5E /* Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84B92FCEA06600697B5E /* Function.swift */; };
+		452F84E02FCEA06600697B5E /* IF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84BA2FCEA06600697B5E /* IF.swift */; };
+		452F84E12FCEA06600697B5E /* Loop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84BB2FCEA06600697B5E /* Loop.swift */; };
+		452F84E22FCEA06600697B5E /* Statement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84BC2FCEA06600697B5E /* Statement.swift */; };
+		452F84E32FCEA06600697B5E /* Variable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84BD2FCEA06600697B5E /* Variable.swift */; };
+		452F84E42FCEA06600697B5E /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84C12FCEA06600697B5E /* Node.swift */; };
+		452F84E52FCEA06600697B5E /* Node+Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84C22FCEA06600697B5E /* Node+Debug.swift */; };
+		452F84E62FCEA06600697B5E /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84C32FCEA06600697B5E /* Parser.swift */; };
+		452F84E72FCEA06600697B5E /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84C42FCEA06600697B5E /* Token.swift */; };
+		452F84E82FCEA06600697B5E /* Tokenizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84C52FCEA06600697B5E /* Tokenizer.swift */; };
+		452F84E92FCEA06600697B5E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84C82FCEA06600697B5E /* ContentView.swift */; };
+		452F84EA2FCEA06600697B5E /* VelaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84CA2FCEA06600697B5E /* VelaApp.swift */; };
+		452F84ED2FCEA06600697B5E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 452F84C72FCEA06600697B5E /* Assets.xcassets */; };
+		452F84F02FCEA08000697B5E /* Eval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84EF2FCEA07E00697B5E /* Eval.swift */; };
+		452F84F22FCEA0A400697B5E /* EvalEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84F12FCEA0A000697B5E /* EvalEnvironment.swift */; };
+		452F84F42FCEA0E700697B5E /* Eval+BinaryExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84F32FCEA0DE00697B5E /* Eval+BinaryExpression.swift */; };
+		452F84F62FCEA23B00697B5E /* EvalError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84F52FCEA23A00697B5E /* EvalError.swift */; };
+		452F84F82FCEA25100697B5E /* EvalRuntime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84F72FCEA24600697B5E /* EvalRuntime.swift */; };
+		452F84FA2FCEA3C300697B5E /* Eval+Statements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84F92FCEA3BF00697B5E /* Eval+Statements.swift */; };
+		452F84FC2FCEA44C00697B5E /* Eval+Expressions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84FB2FCEA44800697B5E /* Eval+Expressions.swift */; };
+		452F84FE2FCEA60000697B5E /* ArrayLiteral.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84FD2FCEA60000697B5E /* ArrayLiteral.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		452F84422FCE6CD800697B5E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,14 +70,50 @@
 		452F84332FCE6CD700697B5E /* Vela.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Vela.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		452F84412FCE6CD800697B5E /* VelaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VelaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		452F844B2FCE6CD800697B5E /* VelaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VelaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		452F84A52FCEA06600697B5E /* Assignment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assignment.swift; sourceTree = "<group>"; };
+		452F84A62FCEA06600697B5E /* Binary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Binary.swift; sourceTree = "<group>"; };
+		452F84A72FCEA06600697B5E /* Equality.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Equality.swift; sourceTree = "<group>"; };
+		452F84A82FCEA06600697B5E /* Expression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Expression.swift; sourceTree = "<group>"; };
+		452F84A92FCEA06600697B5E /* Extend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extend.swift; sourceTree = "<group>"; };
+		452F84AA2FCEA06600697B5E /* Identifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Identifier.swift; sourceTree = "<group>"; };
+		452F84AB2FCEA06600697B5E /* LHS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LHS.swift; sourceTree = "<group>"; };
+		452F84AC2FCEA06600697B5E /* Literal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Literal.swift; sourceTree = "<group>"; };
+		452F84AD2FCEA06600697B5E /* Logical.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logical.swift; sourceTree = "<group>"; };
+		452F84AE2FCEA06600697B5E /* New.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = New.swift; sourceTree = "<group>"; };
+		452F84AF2FCEA06600697B5E /* Parenthesize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parenthesize.swift; sourceTree = "<group>"; };
+		452F84B02FCEA06600697B5E /* Primary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Primary.swift; sourceTree = "<group>"; };
+		452F84B12FCEA06600697B5E /* Relational.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Relational.swift; sourceTree = "<group>"; };
+		452F84B22FCEA06600697B5E /* This.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = This.swift; sourceTree = "<group>"; };
+		452F84B32FCEA06600697B5E /* Unary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unary.swift; sourceTree = "<group>"; };
+		452F84B52FCEA06600697B5E /* Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
+		452F84B62FCEA06600697B5E /* Class.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Class.swift; sourceTree = "<group>"; };
+		452F84B72FCEA06600697B5E /* Empty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Empty.swift; sourceTree = "<group>"; };
+		452F84B82FCEA06600697B5E /* ExpressionStatement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpressionStatement.swift; sourceTree = "<group>"; };
+		452F84B92FCEA06600697B5E /* Function.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Function.swift; sourceTree = "<group>"; };
+		452F84BA2FCEA06600697B5E /* IF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IF.swift; sourceTree = "<group>"; };
+		452F84BB2FCEA06600697B5E /* Loop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loop.swift; sourceTree = "<group>"; };
+		452F84BC2FCEA06600697B5E /* Statement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Statement.swift; sourceTree = "<group>"; };
+		452F84BD2FCEA06600697B5E /* Variable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Variable.swift; sourceTree = "<group>"; };
+		452F84C12FCEA06600697B5E /* Node.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
+		452F84C22FCEA06600697B5E /* Node+Debug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Node+Debug.swift"; sourceTree = "<group>"; };
+		452F84C32FCEA06600697B5E /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
+		452F84C42FCEA06600697B5E /* Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
+		452F84C52FCEA06600697B5E /* Tokenizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tokenizer.swift; sourceTree = "<group>"; };
+		452F84C72FCEA06600697B5E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		452F84C82FCEA06600697B5E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		452F84C92FCEA06600697B5E /* Vela.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Vela.entitlements; sourceTree = "<group>"; };
+		452F84CA2FCEA06600697B5E /* VelaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VelaApp.swift; sourceTree = "<group>"; };
+		452F84EF2FCEA07E00697B5E /* Eval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Eval.swift; sourceTree = "<group>"; };
+		452F84F12FCEA0A000697B5E /* EvalEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvalEnvironment.swift; sourceTree = "<group>"; };
+		452F84F32FCEA0DE00697B5E /* Eval+BinaryExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Eval+BinaryExpression.swift"; sourceTree = "<group>"; };
+		452F84F52FCEA23A00697B5E /* EvalError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvalError.swift; sourceTree = "<group>"; };
+		452F84F72FCEA24600697B5E /* EvalRuntime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvalRuntime.swift; sourceTree = "<group>"; };
+		452F84F92FCEA3BF00697B5E /* Eval+Statements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Eval+Statements.swift"; sourceTree = "<group>"; };
+		452F84FB2FCEA44800697B5E /* Eval+Expressions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Eval+Expressions.swift"; sourceTree = "<group>"; };
+		452F84FD2FCEA60000697B5E /* ArrayLiteral.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayLiteral.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		452F84352FCE6CD700697B5E /* Vela */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Vela;
-			sourceTree = "<group>";
-		};
 		452F84442FCE6CD800697B5E /* VelaTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = VelaTests;
@@ -70,7 +149,7 @@
 		452F842A2FCE6CD700697B5E = {
 			isa = PBXGroup;
 			children = (
-				452F84352FCE6CD700697B5E /* Vela */,
+				452F84CB2FCEA06600697B5E /* Vela */,
 				452F84442FCE6CD800697B5E /* VelaTests */,
 				452F84342FCE6CD700697B5E /* Products */,
 			);
@@ -84,6 +163,86 @@
 				452F844B2FCE6CD800697B5E /* VelaUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		452F84B42FCEA06600697B5E /* Expressions */ = {
+			isa = PBXGroup;
+			children = (
+				452F84FD2FCEA60000697B5E /* ArrayLiteral.swift */,
+				452F84A52FCEA06600697B5E /* Assignment.swift */,
+				452F84A62FCEA06600697B5E /* Binary.swift */,
+				452F84A72FCEA06600697B5E /* Equality.swift */,
+				452F84A82FCEA06600697B5E /* Expression.swift */,
+				452F84A92FCEA06600697B5E /* Extend.swift */,
+				452F84AA2FCEA06600697B5E /* Identifier.swift */,
+				452F84AB2FCEA06600697B5E /* LHS.swift */,
+				452F84AC2FCEA06600697B5E /* Literal.swift */,
+				452F84AD2FCEA06600697B5E /* Logical.swift */,
+				452F84AE2FCEA06600697B5E /* New.swift */,
+				452F84AF2FCEA06600697B5E /* Parenthesize.swift */,
+				452F84B02FCEA06600697B5E /* Primary.swift */,
+				452F84B12FCEA06600697B5E /* Relational.swift */,
+				452F84B22FCEA06600697B5E /* This.swift */,
+				452F84B32FCEA06600697B5E /* Unary.swift */,
+			);
+			path = Expressions;
+			sourceTree = "<group>";
+		};
+		452F84BE2FCEA06600697B5E /* Statement */ = {
+			isa = PBXGroup;
+			children = (
+				452F84B52FCEA06600697B5E /* Block.swift */,
+				452F84B62FCEA06600697B5E /* Class.swift */,
+				452F84B72FCEA06600697B5E /* Empty.swift */,
+				452F84B82FCEA06600697B5E /* ExpressionStatement.swift */,
+				452F84B92FCEA06600697B5E /* Function.swift */,
+				452F84BA2FCEA06600697B5E /* IF.swift */,
+				452F84BB2FCEA06600697B5E /* Loop.swift */,
+				452F84BC2FCEA06600697B5E /* Statement.swift */,
+				452F84BD2FCEA06600697B5E /* Variable.swift */,
+			);
+			path = Statement;
+			sourceTree = "<group>";
+		};
+		452F84C62FCEA06600697B5E /* Parser */ = {
+			isa = PBXGroup;
+			children = (
+				452F84B42FCEA06600697B5E /* Expressions */,
+				452F84BE2FCEA06600697B5E /* Statement */,
+				452F84C12FCEA06600697B5E /* Node.swift */,
+				452F84C22FCEA06600697B5E /* Node+Debug.swift */,
+				452F84C32FCEA06600697B5E /* Parser.swift */,
+				452F84C42FCEA06600697B5E /* Token.swift */,
+				452F84C52FCEA06600697B5E /* Tokenizer.swift */,
+			);
+			path = Parser;
+			sourceTree = "<group>";
+		};
+		452F84CB2FCEA06600697B5E /* Vela */ = {
+			isa = PBXGroup;
+			children = (
+				452F84EE2FCEA07600697B5E /* Interpreter */,
+				452F84C62FCEA06600697B5E /* Parser */,
+				452F84C72FCEA06600697B5E /* Assets.xcassets */,
+				452F84C82FCEA06600697B5E /* ContentView.swift */,
+				452F84C92FCEA06600697B5E /* Vela.entitlements */,
+				452F84CA2FCEA06600697B5E /* VelaApp.swift */,
+			);
+			path = Vela;
+			sourceTree = "<group>";
+		};
+		452F84EE2FCEA07600697B5E /* Interpreter */ = {
+			isa = PBXGroup;
+			children = (
+				452F84EF2FCEA07E00697B5E /* Eval.swift */,
+				452F84F72FCEA24600697B5E /* EvalRuntime.swift */,
+				452F84F52FCEA23A00697B5E /* EvalError.swift */,
+				452F84F12FCEA0A000697B5E /* EvalEnvironment.swift */,
+				452F84FB2FCEA44800697B5E /* Eval+Expressions.swift */,
+				452F84F32FCEA0DE00697B5E /* Eval+BinaryExpression.swift */,
+				452F84F92FCEA3BF00697B5E /* Eval+Statements.swift */,
+			);
+			path = Interpreter;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -100,9 +259,6 @@
 			buildRules = (
 			);
 			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				452F84352FCE6CD700697B5E /* Vela */,
 			);
 			name = Vela;
 			packageProductDependencies = (
@@ -203,6 +359,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				452F84ED2FCEA06600697B5E /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -227,6 +384,45 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				452F84CC2FCEA06600697B5E /* Assignment.swift in Sources */,
+				452F84CD2FCEA06600697B5E /* Binary.swift in Sources */,
+				452F84CE2FCEA06600697B5E /* Equality.swift in Sources */,
+				452F84CF2FCEA06600697B5E /* Expression.swift in Sources */,
+				452F84D02FCEA06600697B5E /* Extend.swift in Sources */,
+				452F84D12FCEA06600697B5E /* Identifier.swift in Sources */,
+				452F84D22FCEA06600697B5E /* LHS.swift in Sources */,
+				452F84F22FCEA0A400697B5E /* EvalEnvironment.swift in Sources */,
+				452F84D32FCEA06600697B5E /* Literal.swift in Sources */,
+				452F84D42FCEA06600697B5E /* Logical.swift in Sources */,
+				452F84D52FCEA06600697B5E /* New.swift in Sources */,
+				452F84D62FCEA06600697B5E /* Parenthesize.swift in Sources */,
+				452F84D72FCEA06600697B5E /* Primary.swift in Sources */,
+				452F84FE2FCEA60000697B5E /* ArrayLiteral.swift in Sources */,
+				452F84D82FCEA06600697B5E /* Relational.swift in Sources */,
+				452F84F02FCEA08000697B5E /* Eval.swift in Sources */,
+				452F84D92FCEA06600697B5E /* This.swift in Sources */,
+				452F84DA2FCEA06600697B5E /* Unary.swift in Sources */,
+				452F84DB2FCEA06600697B5E /* Block.swift in Sources */,
+				452F84DC2FCEA06600697B5E /* Class.swift in Sources */,
+				452F84DD2FCEA06600697B5E /* Empty.swift in Sources */,
+				452F84DE2FCEA06600697B5E /* ExpressionStatement.swift in Sources */,
+				452F84DF2FCEA06600697B5E /* Function.swift in Sources */,
+				452F84FA2FCEA3C300697B5E /* Eval+Statements.swift in Sources */,
+				452F84FC2FCEA44C00697B5E /* Eval+Expressions.swift in Sources */,
+				452F84E02FCEA06600697B5E /* IF.swift in Sources */,
+				452F84E12FCEA06600697B5E /* Loop.swift in Sources */,
+				452F84E22FCEA06600697B5E /* Statement.swift in Sources */,
+				452F84E32FCEA06600697B5E /* Variable.swift in Sources */,
+				452F84E42FCEA06600697B5E /* Node.swift in Sources */,
+				452F84E52FCEA06600697B5E /* Node+Debug.swift in Sources */,
+				452F84E62FCEA06600697B5E /* Parser.swift in Sources */,
+				452F84E72FCEA06600697B5E /* Token.swift in Sources */,
+				452F84F82FCEA25100697B5E /* EvalRuntime.swift in Sources */,
+				452F84E82FCEA06600697B5E /* Tokenizer.swift in Sources */,
+				452F84E92FCEA06600697B5E /* ContentView.swift in Sources */,
+				452F84F42FCEA0E700697B5E /* Eval+BinaryExpression.swift in Sources */,
+				452F84F62FCEA23B00697B5E /* EvalError.swift in Sources */,
+				452F84EA2FCEA06600697B5E /* VelaApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

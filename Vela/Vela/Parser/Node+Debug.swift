@@ -286,6 +286,12 @@ private struct ASTPrinter {
         appendExpression(argument, to: &lines, prefix: argumentsPrefix, isLast: index == node.arguments.count - 1)
       }
       return
+    case let .arrayLiteral(node):
+      let nextPrefix = childPrefix(prefix, isLast: isLast)
+      for (index, element) in node.elements.enumerated() {
+        appendExpression(element, to: &lines, prefix: nextPrefix, isLast: index == node.elements.count - 1)
+      }
+      return
     default:
       return
     }
@@ -348,6 +354,8 @@ private struct ASTPrinter {
       return "SuperExpression"
     case .newExpression:
       return "NewExpression"
+    case .arrayLiteral:
+      return "ArrayLiteral"
     }
   }
 

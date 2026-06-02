@@ -10,6 +10,7 @@ import Foundation
 enum ParserError: Error, CustomStringConvertible {
   case unexpectedEndOfInput(expected: TokenType)
   case unexpectedToken(actual: TokenType, expected: TokenType)
+  case unexpectedExpressionToken(actual: TokenType?)
   case unexpectedLiteralProduction
   case unexpectedBinaryOperator(actual: TokenType)
   case unexpectedAssignmentOperator
@@ -22,6 +23,8 @@ enum ParserError: Error, CustomStringConvertible {
       return "Unexpected end of input, expected: \(expected)"
     case let .unexpectedToken(actual, expected):
       return "Unexpected token: \(actual), expected: \(expected)"
+    case let .unexpectedExpressionToken(actual):
+      return "Unexpected expression token: \(String(describing: actual))"
     case .unexpectedLiteralProduction:
       return "Literal: unexpected literal production"
     case let .unexpectedBinaryOperator(actual: actual):

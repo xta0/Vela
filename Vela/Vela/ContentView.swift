@@ -11,9 +11,15 @@ struct ContentView: View {
   @ObservedObject var parser = Parser()
   @State private var textFieldContent: String = Parser.defaultExampleSource
   @State private var outputMode: OutputMode = .tree
+  @State private var evalResult: String = ""
+  @State private var isShowingEvalResult = false
   @State private var editorFontSize: CGFloat = 14
 
   private var outputText: String {
+    if isShowingEvalResult {
+      return evalResult
+    }
+
     switch outputMode {
     case .tree:
       return parser.results
@@ -28,6 +34,27 @@ struct ContentView: View {
 
   private func increaseEditorFontSize() {
     editorFontSize = min(28, editorFontSize + 1)
+  }
+
+  private func parseSource() {
+    _ = try? parser.parse(textFieldContent)
+    isShowingEvalResult = false
+  }
+
+  private func evalSource() {
+    guard let ast = try? parser.parse(textFieldContent) else {
+      evalResult = parser.results
+      isShowingEvalResult = true
+      return
+    }
+
+    do throws(EvalRuntimeError) {
+      evalResult = try Eval.eval(ast).displayValue
+    } catch {
+      evalResult = "\(error)"
+    }
+
+    isShowingEvalResult = true
   }
 
   var body: some View {
@@ -54,14 +81,19 @@ struct ContentView: View {
           }
 
           HStack {
+            Button("Eval") {
+              evalSource()
+            }
             Button("Parse") {
-              _ = try? parser.parse(textFieldContent)
+              parseSource()
             }
             Button("Clear") {
               textFieldContent = ""
+              isShowingEvalResult = false
             }
             Button("Restore") {
               textFieldContent = Parser.defaultExampleSource
+              isShowingEvalResult = false
             }
           }
         }
@@ -79,8 +111,10 @@ struct ContentView: View {
         TextEditor(text: .constant(outputText))
           .padding()
         HStack {
-          Button(outputMode.buttonTitle) {
-            outputMode.toggle()
+          if !isShowingEvalResult {
+            Button(outputMode.buttonTitle) {
+              outputMode.toggle()
+            }
           }
         }
         Spacer()

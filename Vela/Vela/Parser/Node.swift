@@ -34,7 +34,8 @@
 //    ├─ FuncCallExpression
 //    ├─ ThisExpression
 //    ├─ SuperExpression
-//    └─ NewExpression
+//    ├─ NewExpression
+//    └─ ArrayLiteral
 //
 // Statement is a wrapper over statement node variants, not a concrete ASTNode.
 protocol ASTNode {}
@@ -95,6 +96,8 @@ indirect enum Expression: ASTNode {
       return exp.type
     case let .newExpression(exp):
       return exp.type
+    case let .arrayLiteral(exp):
+      return exp.type
     }
   }
 
@@ -112,6 +115,7 @@ indirect enum Expression: ASTNode {
   case thisExpression(ThisExpression)
   case superExpression(SuperExpression)
   case newExpression(NewExpression)
+  case arrayLiteral(ArrayLiteral)
 }
 
 extension Expression: Encodable {
@@ -144,6 +148,8 @@ extension Expression: Encodable {
     case let .superExpression(node):
       try node.encode(to: encoder)
     case let .newExpression(node):
+      try node.encode(to: encoder)
+    case let .arrayLiteral(node):
       try node.encode(to: encoder)
     }
   }
@@ -237,6 +243,13 @@ struct NewExpression: ASTNode, Encodable {
   let type = "NewExpression"
   let callee: Expression
   let arguments: [Expression]
+}
+
+// MARK: Array Literal
+
+struct ArrayLiteral: ASTNode, Encodable {
+  let type = "ArrayLiteral"
+  let elements: [Expression]
 }
 
 // MARK: Statements

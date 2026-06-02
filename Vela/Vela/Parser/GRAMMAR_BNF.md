@@ -322,6 +322,7 @@ MemberExpression
 PrimaryExpression
   : Literal
   | ParenthesizedExpression
+  | ArrayLiteral
   | IDENTIFIER
   | ThisExpression
   | NewExpression
@@ -329,6 +330,20 @@ PrimaryExpression
 
 ParenthesizedExpression
   : LEFT_BRACE Expression RIGHT_BRACE
+  ;
+
+ArrayLiteral
+  : LEFT_SQUARE_BRACKET ArrayElementListOpt RIGHT_SQUARE_BRACKET
+  ;
+
+ArrayElementListOpt
+  : ArrayElementList
+  | /* empty */
+  ;
+
+ArrayElementList
+  : LogicalOrExpression
+  | ArrayElementList COMMA LogicalOrExpression
   ;
 
 ThisExpression
