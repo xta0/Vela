@@ -14,6 +14,7 @@ extension Parser {
   // Examples:
   // `x`
   // `!x`
+  // `-x`
   // `!!x`
   // `!(x && y)`
   //
@@ -28,6 +29,8 @@ extension Parser {
     switch lookahead?.type {
     case .UNARY(op: "!"):
       op = try eat(.UNARY(op: "!")).value
+    case .MINUS:
+      op = try eat(.MINUS).value
     default:
       op = nil
     }

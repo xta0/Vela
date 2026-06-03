@@ -44,9 +44,11 @@
 		452F84F42FCEA0E700697B5E /* Eval+BinaryExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84F32FCEA0DE00697B5E /* Eval+BinaryExpression.swift */; };
 		452F84F62FCEA23B00697B5E /* EvalError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84F52FCEA23A00697B5E /* EvalError.swift */; };
 		452F84F82FCEA25100697B5E /* EvalRuntime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84F72FCEA24600697B5E /* EvalRuntime.swift */; };
-		452F84FA2FCEA3C300697B5E /* Eval+Statements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84F92FCEA3BF00697B5E /* Eval+Statements.swift */; };
+		452F84FA2FCEA3C300697B5E /* Eval+Statement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84F92FCEA3BF00697B5E /* Eval+Statement.swift */; };
 		452F84FC2FCEA44C00697B5E /* Eval+Expressions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84FB2FCEA44800697B5E /* Eval+Expressions.swift */; };
 		452F84FE2FCEA60000697B5E /* ArrayLiteral.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84FD2FCEA60000697B5E /* ArrayLiteral.swift */; };
+		452F85012FCF000000697B5E /* DictionaryLiteral.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F85002FCF000000697B5E /* DictionaryLiteral.swift */; };
+		452F850A2FCFE77900697B5E /* EvalRuntime+Value.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F85092FCFE77700697B5E /* EvalRuntime+Value.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -108,9 +110,11 @@
 		452F84F32FCEA0DE00697B5E /* Eval+BinaryExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Eval+BinaryExpression.swift"; sourceTree = "<group>"; };
 		452F84F52FCEA23A00697B5E /* EvalError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvalError.swift; sourceTree = "<group>"; };
 		452F84F72FCEA24600697B5E /* EvalRuntime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvalRuntime.swift; sourceTree = "<group>"; };
-		452F84F92FCEA3BF00697B5E /* Eval+Statements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Eval+Statements.swift"; sourceTree = "<group>"; };
+		452F84F92FCEA3BF00697B5E /* Eval+Statement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Eval+Statement.swift"; sourceTree = "<group>"; };
 		452F84FB2FCEA44800697B5E /* Eval+Expressions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Eval+Expressions.swift"; sourceTree = "<group>"; };
 		452F84FD2FCEA60000697B5E /* ArrayLiteral.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayLiteral.swift; sourceTree = "<group>"; };
+		452F85002FCF000000697B5E /* DictionaryLiteral.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryLiteral.swift; sourceTree = "<group>"; };
+		452F85092FCFE77700697B5E /* EvalRuntime+Value.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EvalRuntime+Value.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -171,6 +175,7 @@
 				452F84FD2FCEA60000697B5E /* ArrayLiteral.swift */,
 				452F84A52FCEA06600697B5E /* Assignment.swift */,
 				452F84A62FCEA06600697B5E /* Binary.swift */,
+				452F85002FCF000000697B5E /* DictionaryLiteral.swift */,
 				452F84A72FCEA06600697B5E /* Equality.swift */,
 				452F84A82FCEA06600697B5E /* Expression.swift */,
 				452F84A92FCEA06600697B5E /* Extend.swift */,
@@ -236,11 +241,12 @@
 			children = (
 				452F84EF2FCEA07E00697B5E /* Eval.swift */,
 				452F84F72FCEA24600697B5E /* EvalRuntime.swift */,
+				452F85092FCFE77700697B5E /* EvalRuntime+Value.swift */,
 				452F84F52FCEA23A00697B5E /* EvalError.swift */,
 				452F84F12FCEA0A000697B5E /* EvalEnvironment.swift */,
 				452F84FB2FCEA44800697B5E /* Eval+Expressions.swift */,
 				452F84F32FCEA0DE00697B5E /* Eval+BinaryExpression.swift */,
-				452F84F92FCEA3BF00697B5E /* Eval+Statements.swift */,
+				452F84F92FCEA3BF00697B5E /* Eval+Statement.swift */,
 			);
 			path = Interpreter;
 			sourceTree = "<group>";
@@ -398,6 +404,7 @@
 				452F84D62FCEA06600697B5E /* Parenthesize.swift in Sources */,
 				452F84D72FCEA06600697B5E /* Primary.swift in Sources */,
 				452F84FE2FCEA60000697B5E /* ArrayLiteral.swift in Sources */,
+				452F85012FCF000000697B5E /* DictionaryLiteral.swift in Sources */,
 				452F84D82FCEA06600697B5E /* Relational.swift in Sources */,
 				452F84F02FCEA08000697B5E /* Eval.swift in Sources */,
 				452F84D92FCEA06600697B5E /* This.swift in Sources */,
@@ -407,7 +414,7 @@
 				452F84DD2FCEA06600697B5E /* Empty.swift in Sources */,
 				452F84DE2FCEA06600697B5E /* ExpressionStatement.swift in Sources */,
 				452F84DF2FCEA06600697B5E /* Function.swift in Sources */,
-				452F84FA2FCEA3C300697B5E /* Eval+Statements.swift in Sources */,
+				452F84FA2FCEA3C300697B5E /* Eval+Statement.swift in Sources */,
 				452F84FC2FCEA44C00697B5E /* Eval+Expressions.swift in Sources */,
 				452F84E02FCEA06600697B5E /* IF.swift in Sources */,
 				452F84E12FCEA06600697B5E /* Loop.swift in Sources */,
@@ -418,6 +425,7 @@
 				452F84E62FCEA06600697B5E /* Parser.swift in Sources */,
 				452F84E72FCEA06600697B5E /* Token.swift in Sources */,
 				452F84F82FCEA25100697B5E /* EvalRuntime.swift in Sources */,
+				452F850A2FCFE77900697B5E /* EvalRuntime+Value.swift in Sources */,
 				452F84E82FCEA06600697B5E /* Tokenizer.swift in Sources */,
 				452F84E92FCEA06600697B5E /* ContentView.swift in Sources */,
 				452F84F42FCEA0E700697B5E /* Eval+BinaryExpression.swift in Sources */,

@@ -292,6 +292,12 @@ private struct ASTPrinter {
         appendExpression(element, to: &lines, prefix: nextPrefix, isLast: index == node.elements.count - 1)
       }
       return
+    case let .dictionaryLiteral(node):
+      let nextPrefix = childPrefix(prefix, isLast: isLast)
+      for (index, entry) in node.entries.enumerated() {
+        appendDictionaryEntry(entry, to: &lines, prefix: nextPrefix, isLast: index == node.entries.count - 1)
+      }
+      return
     default:
       return
     }
@@ -299,6 +305,21 @@ private struct ASTPrinter {
     let nextPrefix = childPrefix(prefix, isLast: isLast)
     appendExpression(left, to: &lines, prefix: nextPrefix, isLast: false)
     appendExpression(right, to: &lines, prefix: nextPrefix, isLast: true)
+  }
+
+  private func appendDictionaryEntry(
+    _ entry: DictionaryEntry,
+    to lines: inout [String],
+    prefix: String,
+    isLast: Bool
+  ) {
+    lines.append("\(prefix)\(branch(isLast))DictionaryEntry")
+
+    let nextPrefix = childPrefix(prefix, isLast: isLast)
+    lines.append("\(nextPrefix)├─ Key")
+    appendExpression(entry.key, to: &lines, prefix: "\(nextPrefix)│  ", isLast: true)
+    lines.append("\(nextPrefix)└─ Value")
+    appendExpression(entry.value, to: &lines, prefix: "\(nextPrefix)   ", isLast: true)
   }
 
   private func label(for statement: Statement) -> String {
@@ -356,6 +377,8 @@ private struct ASTPrinter {
       return "NewExpression"
     case .arrayLiteral:
       return "ArrayLiteral"
+    case .dictionaryLiteral:
+      return "DictionaryLiteral"
     }
   }
 

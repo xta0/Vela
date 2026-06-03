@@ -5,8 +5,11 @@
 //  Created by Tao Xu on 6/1/26.
 //
 
+import Foundation
+
 enum EvalRuntimeValue {
-  case number(Double)
+  case int(Int)
+  case double(Double)
   case string(String)
   case bool(Bool)
   case null
@@ -15,31 +18,6 @@ enum EvalRuntimeValue {
   case nativeFunction(NativeFunction)
   case object(EvalRuntimeObject)
   case klass(EvalRuntimeClass)
-}
-
-extension EvalRuntimeValue {
-  var displayValue: String {
-    switch self {
-    case let .number(value):
-      return value.truncatingRemainder(dividingBy: 1) == 0
-        ? String(Int(value))
-        : String(value)
-    case let .string(value):
-      return value
-    case let .bool(value):
-      return String(value)
-    case .null:
-      return "null"
-    case let .function(function):
-      return "<function \(function.name ?? "<anonymous>")>"
-    case let .nativeFunction(function):
-      return "<native function \(function.name)>"
-    case .object:
-      return "<object>"
-    case let .klass(klass):
-      return "<class \(klass.name)>"
-    }
-  }
 }
 
 struct EvalRuntimeFunction {

@@ -12,6 +12,7 @@ extension Parser {
   //   : Literal
   //   | ParenthesizedExpression
   //   | ArrayLiteral
+  //   | DictionaryLiteral
   //   | Identifier
   //   | ThisExpression
   //   | NewExpression
@@ -24,6 +25,7 @@ extension Parser {
   // `x`
   // `(1 + 2)`
   // `[x, y + 1]`
+  // `{ "x": 1 }`
   // `this`
   // `new Point(1, 2)`
   func primaryExpressionBuilder() throws -> Expression {
@@ -35,6 +37,8 @@ extension Parser {
       return try parenthesizedExpressionBuilder()
     case .LEFT_SQUARE_BRACKET:
       return try arrayLiteralBuilder()
+    case .LEFT_CURLY_BRACE:
+      return try dictionaryLiteralBuilder()
     case .IDENTIFIER:
       return try identifierBuilder()
     case .KEYWORD(keyword: "this"):

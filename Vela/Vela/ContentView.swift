@@ -13,10 +13,16 @@ struct ContentView: View {
   @State private var outputMode: OutputMode = .tree
   @State private var evalResult: String = ""
   @State private var isShowingEvalResult = false
+  @State private var isShowingEnvironment = false
   @State private var editorFontSize: CGFloat = 14
+  private let footerHeight: CGFloat = 28
 
   private var outputText: String {
     if isShowingEvalResult {
+      if isShowingEnvironment {
+        return Eval.globalEnv.jsonDescription
+      }
+
       return evalResult
     }
 
@@ -39,9 +45,13 @@ struct ContentView: View {
   private func parseSource() {
     _ = try? parser.parse(textFieldContent)
     isShowingEvalResult = false
+    isShowingEnvironment = false
   }
 
   private func evalSource() {
+    isShowingEnvironment = false
+    Eval.globalEnv.clear()
+
     guard let ast = try? parser.parse(textFieldContent) else {
       evalResult = parser.results
       isShowingEvalResult = true
@@ -89,17 +99,22 @@ struct ContentView: View {
             }
             Button("Clear") {
               textFieldContent = ""
+              parser.clear()
+              Eval.globalEnv.clear()
+              evalResult = ""
               isShowingEvalResult = false
+              isShowingEnvironment = false
             }
             Button("Restore") {
               textFieldContent = Parser.defaultExampleSource
               isShowingEvalResult = false
+              isShowingEnvironment = false
             }
           }
         }
+        .frame(height: footerHeight)
         .padding(.horizontal)
         .padding(.bottom)
-        Spacer()
       }
       .frame(maxWidth: .infinity, maxHeight: .infinity)
       .background(Color.gray.opacity(0.2))
@@ -109,15 +124,22 @@ struct ContentView: View {
       // Right: TextView (TextEditor)
       VStack {
         TextEditor(text: .constant(outputText))
-          .padding()
+          .padding(.top)
+          .padding(.horizontal)
         HStack {
-          if !isShowingEvalResult {
+          if isShowingEvalResult {
+            Button("Env") {
+              isShowingEnvironment = true
+            }
+          } else {
             Button(outputMode.buttonTitle) {
               outputMode.toggle()
             }
           }
         }
-        Spacer()
+        .frame(height: footerHeight)
+        .padding(.horizontal)
+        .padding(.bottom)
       }
       .frame(maxWidth: .infinity, maxHeight: .infinity)
       .background(Color.gray.opacity(0.1))

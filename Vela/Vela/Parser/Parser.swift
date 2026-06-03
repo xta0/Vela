@@ -50,6 +50,11 @@ final class Parser: ObservableObject {
 
   init() {}
 
+  func clear() {
+    results = ""
+    ast = nil
+  }
+
   @discardableResult
   func parse(_ input: String) throws -> Program? {
     string = input

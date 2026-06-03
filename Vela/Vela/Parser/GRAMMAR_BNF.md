@@ -42,6 +42,7 @@
 ;                      return 'SEMICOLON'
 ,                      return 'COMMA'
 \.                     return 'DOT'
+:                      return 'COLON'
 
 \{                     return 'LEFT_CURLY_BRACE'
 \}                     return 'RIGHT_CURLY_BRACE'
@@ -64,8 +65,10 @@
 [*+\-/]=               return 'COMPLEX_ASSIGNMENT'
 =                      return 'SIMPLE_ASSIGNMENT'
 
-[+\-]                  return 'ADD'
-[*\/]                  return 'MUL'
+\+                     return 'ADD'
+-                      return 'MINUS'
+\*                     return 'MUL'
+\/                     return 'DIV'
 
 \blet\b                return 'LET'
 \bif\b                 return 'IF'
@@ -267,17 +270,18 @@ RelationalExpression
 
 AdditiveExpression
   : MultiplicativeExpression
-  | AdditiveExpression ADD MultiplicativeExpression
+  | AdditiveExpression (ADD | MINUS) MultiplicativeExpression
   ;
 
 MultiplicativeExpression
   : UnaryExpression
-  | MultiplicativeExpression MUL UnaryExpression
+  | MultiplicativeExpression (MUL | DIV) UnaryExpression
   ;
 
 UnaryExpression
   : LeftHandSideExpression
   | UNARY UnaryExpression
+  | MINUS UnaryExpression
   ;
 
 LeftHandSideExpression
@@ -323,6 +327,7 @@ PrimaryExpression
   : Literal
   | ParenthesizedExpression
   | ArrayLiteral
+  | DictionaryLiteral
   | IDENTIFIER
   | ThisExpression
   | NewExpression
@@ -344,6 +349,24 @@ ArrayElementListOpt
 ArrayElementList
   : LogicalOrExpression
   | ArrayElementList COMMA LogicalOrExpression
+  ;
+
+DictionaryLiteral
+  : LEFT_CURLY_BRACE DictionaryEntryListOpt RIGHT_CURLY_BRACE
+  ;
+
+DictionaryEntryListOpt
+  : DictionaryEntryList
+  | /* empty */
+  ;
+
+DictionaryEntryList
+  : DictionaryEntry
+  | DictionaryEntryList COMMA DictionaryEntry
+  ;
+
+DictionaryEntry
+  : LogicalOrExpression COLON LogicalOrExpression
   ;
 
 ThisExpression

@@ -9,6 +9,7 @@ enum TokenType {
   case SEMICOLON
   case COMMA
   case DOT
+  case COLON
 
   case LEFT_CURLY_BRACE
   case RIGHT_CURLY_BRACE
@@ -28,7 +29,9 @@ enum TokenType {
   case UNKNOWN
 
   case ADD
+  case MINUS
   case MUL
+  case DIV
 
   case IDENTIFIER
 
@@ -53,6 +56,7 @@ extension TokenType: Equatable {
     case (.SEMICOLON, .SEMICOLON),
          (.COMMA, .COMMA),
          (.DOT, .DOT),
+         (.COLON, .COLON),
          (.LEFT_CURLY_BRACE, .LEFT_CURLY_BRACE),
          (.RIGHT_CURLY_BRACE, .RIGHT_CURLY_BRACE),
          (.LEFT_SQUARE_BRACKET, .LEFT_SQUARE_BRACKET),
@@ -66,7 +70,9 @@ extension TokenType: Equatable {
          (.COMMENT_BLOCK, .COMMENT_BLOCK),
          (.UNKNOWN, .UNKNOWN),
          (.ADD, .ADD),
+         (.MINUS, .MINUS),
          (.MUL, .MUL),
+         (.DIV, .DIV),
          (.IDENTIFIER, .IDENTIFIER),
          (.SIMPLE_ASSIGNMENT, .SIMPLE_ASSIGNMENT),
          (.RELATIONAL, .RELATIONAL),
@@ -101,10 +107,11 @@ extension Token {
     TokenSpec(regex: /^\/\/.*/, type: .COMMENT),
     TokenSpec(regex: /^\/\*[\s\S]*?\*\//, type: .COMMENT),
 
-    // ;, , .
+    // ;, , ., :
     TokenSpec(regex: /^;/, type: .SEMICOLON),
     TokenSpec(regex: /^,/, type: .COMMA),
     TokenSpec(regex: /^\./, type: .DOT),
+    TokenSpec(regex: /^:/, type: .COLON),
 
     // {..},[..], (..),
     TokenSpec(regex: /^\{/, type: .LEFT_CURLY_BRACE),
@@ -141,8 +148,10 @@ extension Token {
     TokenSpec(regex: /^=/, type: .SIMPLE_ASSIGNMENT),
 
     // math ops: +, -, *, /
-    TokenSpec(regex: /^[+\-]/, type: .ADD),
-    TokenSpec(regex: /^[*\/]/, type: .MUL),
+    TokenSpec(regex: /^\+/, type: .ADD),
+    TokenSpec(regex: /^-/, type: .MINUS),
+    TokenSpec(regex: /^\*/, type: .MUL),
+    TokenSpec(regex: /^\//, type: .DIV),
 
     // keywords:
     // trailing word boundaries keep identifiers like `returnValue` from being

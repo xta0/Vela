@@ -493,6 +493,28 @@ struct VelaParserTests {
     #expect(try identifierValue(unary.argument) == "x")
   }
 
+  @Test func parsesUnaryMinusExpression() throws {
+    let program = try parseProgram("-1;")
+    let expression = try expressionStatementValue(program.body[0])
+
+    let unary = try unaryExpression(expression)
+    #expect(unary.operatorValue == "-")
+    #expect(try numericValue(unary.argument) == 1)
+  }
+
+  @Test func parsesUnaryMinusInAssignmentExpression() throws {
+    let program = try parseProgram("x = -1;")
+    let expression = try expressionStatementValue(program.body[0])
+
+    let assignment = try assignmentExpression(expression)
+    #expect(assignment.operatorValue == "=")
+    #expect(try identifierValue(assignment.left) == "x")
+
+    let right = try unaryExpression(assignment.right)
+    #expect(right.operatorValue == "-")
+    #expect(try numericValue(right.argument) == 1)
+  }
+
   @Test func parsesUnaryExpressionBeforeMultiplicativeExpression() throws {
     let program = try parseProgram("!x * y;")
     let expression = try expressionStatementValue(program.body[0])
@@ -506,6 +528,19 @@ struct VelaParserTests {
     #expect(try identifierValue(left.argument) == "x")
   }
 
+  @Test func parsesUnaryMinusBeforeMultiplicativeExpression() throws {
+    let program = try parseProgram("x * -2;")
+    let expression = try expressionStatementValue(program.body[0])
+
+    let root = try binaryExpression(expression)
+    #expect(root.operatorValue == "*")
+    #expect(try identifierValue(root.left) == "x")
+
+    let right = try unaryExpression(root.right)
+    #expect(right.operatorValue == "-")
+    #expect(try numericValue(right.argument) == 2)
+  }
+
   @Test func parsesParenthesizedLogicalExpressionAsUnaryArgument() throws {
     let program = try parseProgram("!(x && y);")
     let expression = try expressionStatementValue(program.body[0])
@@ -517,6 +552,19 @@ struct VelaParserTests {
     #expect(argument.operatorValue == "&&")
     #expect(try identifierValue(argument.left) == "x")
     #expect(try identifierValue(argument.right) == "y")
+  }
+
+  @Test func parsesParenthesizedExpressionAsUnaryMinusArgument() throws {
+    let program = try parseProgram("-(1 + 2);")
+    let expression = try expressionStatementValue(program.body[0])
+
+    let unary = try unaryExpression(expression)
+    #expect(unary.operatorValue == "-")
+
+    let argument = try binaryExpression(unary.argument)
+    #expect(argument.operatorValue == "+")
+    #expect(try numericValue(argument.left) == 1)
+    #expect(try numericValue(argument.right) == 2)
   }
 
   @Test func parsesRelationalOperators() throws {
@@ -810,6 +858,64 @@ struct VelaParserTests {
     let parser = Parser()
 
     let program = try parser.parse("[y = 2];")
+
+    #expect(program == nil)
+    #expect(parser.results.contains("Unexpected token"))
+    #expect(parser.results.contains("SIMPLE_ASSIGNMENT"))
+  }
+
+  @Test func parsesDictionaryLiteralExpression() throws {
+    let program = try parseProgram(#"let config = { "name": "Vela", count: 1 + 2, nested: { "ok": true } };"#)
+    let variable = try variableStatement(program.body[0])
+    let initializer = try #require(variable.declarations[0].initializer)
+
+    let dictionary = try dictionaryLiteral(initializer)
+    #expect(dictionary.entries.count == 3)
+    #expect(try stringLiteralValue(dictionary.entries[0].key) == "name")
+    #expect(try stringLiteralValue(dictionary.entries[0].value) == "Vela")
+    #expect(try identifierValue(dictionary.entries[1].key) == "count")
+
+    let countValue = try binaryExpression(dictionary.entries[1].value)
+    #expect(countValue.operatorValue == "+")
+    #expect(try numericValue(countValue.left) == 1)
+    #expect(try numericValue(countValue.right) == 2)
+
+    #expect(try identifierValue(dictionary.entries[2].key) == "nested")
+    let nested = try dictionaryLiteral(dictionary.entries[2].value)
+    #expect(nested.entries.count == 1)
+    #expect(try stringLiteralValue(nested.entries[0].key) == "ok")
+    #expect(try booleanValue(nested.entries[0].value) == true)
+  }
+
+  @Test func parsesEmptyDictionaryLiteralExpression() throws {
+    let program = try parseProgram("let empty = {};")
+    let variable = try variableStatement(program.body[0])
+    let initializer = try #require(variable.declarations[0].initializer)
+
+    let dictionary = try dictionaryLiteral(initializer)
+    #expect(dictionary.entries.isEmpty)
+  }
+
+  @Test func parsesDictionaryLiteralAsCallArgument() throws {
+    let program = try parseProgram("graph.run({ x: 1, y: z }, t1);")
+    let expression = try expressionStatementValue(program.body[0])
+
+    let call = try funcCallExpression(expression)
+    #expect(call.arguments.count == 2)
+
+    let firstArgument = try dictionaryLiteral(call.arguments[0])
+    #expect(firstArgument.entries.count == 2)
+    #expect(try identifierValue(firstArgument.entries[0].key) == "x")
+    #expect(try numericValue(firstArgument.entries[0].value) == 1)
+    #expect(try identifierValue(firstArgument.entries[1].key) == "y")
+    #expect(try identifierValue(firstArgument.entries[1].value) == "z")
+    #expect(try identifierValue(call.arguments[1]) == "t1")
+  }
+
+  @Test func parseFailsForAssignmentInDictionaryLiteralValue() throws {
+    let parser = Parser()
+
+    let program = try parser.parse("let config = { y: z = 2 };")
 
     #expect(program == nil)
     #expect(parser.results.contains("Unexpected token"))
@@ -1307,6 +1413,15 @@ private func arrayLiteral(_ expression: Expression) throws -> ArrayLiteral {
   return arrayLiteral
 }
 
+private func dictionaryLiteral(_ expression: Expression) throws -> DictionaryLiteral {
+  guard case let .dictionaryLiteral(dictionaryLiteral) = expression else {
+    Issue.record("Expected DictionaryLiteral")
+    throw TestFailure()
+  }
+
+  return dictionaryLiteral
+}
+
 private func newExpression(_ expression: Expression) throws -> NewExpression {
   guard case let .newExpression(newExpression) = expression else {
     Issue.record("Expected NewExpression")
@@ -1355,6 +1470,10 @@ private func identifierValue(_ expression: Expression) throws -> String {
 private func stringValue(_ statement: Statement) throws -> String {
   let expression = try expressionStatementValue(statement)
 
+  return try stringLiteralValue(expression)
+}
+
+private func stringLiteralValue(_ expression: Expression) throws -> String {
   guard case let .stringLiteral(node) = expression else {
     Issue.record("Expected StringLiteral")
     throw TestFailure()

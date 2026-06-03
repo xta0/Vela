@@ -10,7 +10,7 @@ import Foundation
 extension Parser {
   // AdditiveExpression
   //   : MultiplicativeExpression
-  //   | AdditiveExpression ADD MultiplicativeExpression
+  //   | AdditiveExpression (ADD | MINUS) MultiplicativeExpression
   //   ;
   //
   // Examples:
@@ -20,18 +20,18 @@ extension Parser {
   //
   // Left recursive:
   //
-  // AdditiveExpression → AdditiveExpression ADD MultiplicativeExpression
-  // MultiplicativeExpression ADD MultiplicativeExpression
-  // MultiplicativeExpression ADD MultiplicativeExpression ADD MultiplicativeExpression
+  // AdditiveExpression → AdditiveExpression (ADD | MINUS) MultiplicativeExpression
+  // MultiplicativeExpression (ADD | MINUS) MultiplicativeExpression
+  // MultiplicativeExpression (ADD | MINUS) MultiplicativeExpression (ADD | MINUS) MultiplicativeExpression
   // ...
   func additiveExpressionBuilder() throws -> Expression {
     // fallback to multiplacationExp
-    try binaryExpressionBuilder(.ADD, operand: multiplicativeExpressionBuilder)
+    try binaryExpressionBuilder([.ADD, .MINUS], operand: multiplicativeExpressionBuilder)
   }
 
   // MultiplicativeExpression
   //   : UnaryExpression
-  //   | MultiplicativeExpression MUL UnaryExpression
+  //   | MultiplicativeExpression (MUL | DIV) UnaryExpression
   //   ;
   //
   // Examples:
@@ -41,21 +41,25 @@ extension Parser {
   //
   // Left recursive:
   //
-  // MultiplicativeExpression → MultiplicativeExpression MUL UnaryExpression
-  // UnaryExpression MUL UnaryExpression
-  // UnaryExpression MUL UnaryExpression MUL UnaryExpression
+  // MultiplicativeExpression → MultiplicativeExpression (MUL | DIV) UnaryExpression
+  // UnaryExpression (MUL | DIV) UnaryExpression
+  // UnaryExpression (MUL | DIV) UnaryExpression (MUL | DIV) UnaryExpression
   // ...
   func multiplicativeExpressionBuilder() throws -> Expression {
     // fallback to unaryExp
-    try binaryExpressionBuilder(.MUL, operand: unaryExpressionBuilder)
+    try binaryExpressionBuilder([.MUL, .DIV], operand: unaryExpressionBuilder)
   }
 }
 
 extension Parser {
-  func binaryExpressionBuilder(_ op: TokenType, operand: () throws -> Expression) throws -> Expression {
+  func binaryExpressionBuilder(_ operatorType: TokenType, operand: () throws -> Expression) throws -> Expression {
+    try binaryExpressionBuilder([operatorType], operand: operand)
+  }
+
+  func binaryExpressionBuilder(_ operators: [TokenType], operand: () throws -> Expression) throws -> Expression {
     var left = try operand()
-    while lookahead?.type == op {
-      let operatorValue = try eat(op).value
+    while let operatorType = lookahead?.type, operators.contains(operatorType) {
+      let operatorValue = try eat(operatorType).value
       let right = try operand()
       left = .binaryExpression(
         BinaryExpression(

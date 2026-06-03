@@ -97,6 +97,18 @@ Their elements are parsed with `LogicalOrExpression`, not
 syntax inside array elements, so `[y = 2]` is rejected while expressions such as
 `[y || z, x + 1]` remain valid.
 
+Dictionary literals follow the same primary-expression model:
+
+```js
+{ "name": "Vela", count: 3 }
+```
+
+Both dictionary keys and values are parsed with `LogicalOrExpression`. This
+keeps dictionary construction consistent with array construction: `{ y: z = 2 }`
+is rejected, while `{ y: z || fallback, count: 1 + 2 }` remains valid. A leading
+`{` at statement position still means `BlockStatement`; dictionary literals are
+parsed in expression positions such as variable initializers and call arguments.
+
 The OOP additions follow the same model. `statementBuilder()` routes `class` to
 a class-declaration parser, while `primaryExpressionBuilder()` routes `this` and
 `new` to expression parsers:
@@ -144,7 +156,7 @@ For addition:
 
 ```swift
 func additiveExpressionBuilder() throws -> Expression {
-  try binaryExpressionBuilder(.ADD, operand: multiplicativeExpressionBuilder)
+  try binaryExpressionBuilder([.ADD, .MINUS], operand: multiplicativeExpressionBuilder)
 }
 ```
 
@@ -152,7 +164,7 @@ For multiplication:
 
 ```swift
 func multiplicativeExpressionBuilder() throws -> Expression {
-  try binaryExpressionBuilder(.MUL, operand: unaryExpressionBuilder)
+  try binaryExpressionBuilder([.MUL, .DIV], operand: unaryExpressionBuilder)
 }
 ```
 
@@ -271,7 +283,7 @@ For example:
 
 ```bnf
 AdditiveExpression
-  : AdditiveExpression ADD MultiplicativeExpression
+  : AdditiveExpression (ADD | MINUS) MultiplicativeExpression
   | MultiplicativeExpression
   ;
 ```
@@ -295,7 +307,7 @@ This direct implementation would never stop:
 ```swift
 func additiveExpressionBuilder() throws -> Expression {
   let left = try additiveExpressionBuilder()
-  let operatorValue = try eat(.ADD).value
+  let operatorValue = try eat(lookahead!.type).value
   let right = try multiplicativeExpressionBuilder()
   return .binaryExpression(
     BinaryExpression(
@@ -314,7 +326,7 @@ So recursive descent parsers usually rewrite this:
 
 ```bnf
 AdditiveExpression
-  : AdditiveExpression ADD MultiplicativeExpression
+  : AdditiveExpression (ADD | MINUS) MultiplicativeExpression
   | MultiplicativeExpression
   ;
 ```
@@ -323,7 +335,7 @@ into this:
 
 ```bnf
 AdditiveExpression
-  : MultiplicativeExpression (ADD MultiplicativeExpression)*
+  : MultiplicativeExpression ((ADD | MINUS) MultiplicativeExpression)*
   ;
 ```
 
@@ -332,8 +344,8 @@ The Swift version is:
 ```swift
 var left = try multiplicativeExpressionBuilder()
 
-while lookahead?.type == .ADD {
-  let operatorValue = try eat(.ADD).value
+while let operatorType = lookahead?.type, [.ADD, .MINUS].contains(operatorType) {
+  let operatorValue = try eat(operatorType).value
   let right = try multiplicativeExpressionBuilder()
   left = .binaryExpression(
     BinaryExpression(

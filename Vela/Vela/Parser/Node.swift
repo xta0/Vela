@@ -35,7 +35,8 @@
 //    ├─ ThisExpression
 //    ├─ SuperExpression
 //    ├─ NewExpression
-//    └─ ArrayLiteral
+//    ├─ ArrayLiteral
+//    └─ DictionaryLiteral
 //
 // Statement is a wrapper over statement node variants, not a concrete ASTNode.
 protocol ASTNode {}
@@ -98,6 +99,8 @@ indirect enum Expression: ASTNode {
       return exp.type
     case let .arrayLiteral(exp):
       return exp.type
+    case let .dictionaryLiteral(exp):
+      return exp.type
     }
   }
 
@@ -116,6 +119,7 @@ indirect enum Expression: ASTNode {
   case superExpression(SuperExpression)
   case newExpression(NewExpression)
   case arrayLiteral(ArrayLiteral)
+  case dictionaryLiteral(DictionaryLiteral)
 }
 
 extension Expression: Encodable {
@@ -150,6 +154,8 @@ extension Expression: Encodable {
     case let .newExpression(node):
       try node.encode(to: encoder)
     case let .arrayLiteral(node):
+      try node.encode(to: encoder)
+    case let .dictionaryLiteral(node):
       try node.encode(to: encoder)
     }
   }
@@ -250,6 +256,18 @@ struct NewExpression: ASTNode, Encodable {
 struct ArrayLiteral: ASTNode, Encodable {
   let type = "ArrayLiteral"
   let elements: [Expression]
+}
+
+// MARK: Dictionary Literal
+
+struct DictionaryLiteral: ASTNode, Encodable {
+  let type = "DictionaryLiteral"
+  let entries: [DictionaryEntry]
+}
+
+struct DictionaryEntry: ASTNode, Encodable {
+  let key: Expression
+  let value: Expression
 }
 
 // MARK: Statements
