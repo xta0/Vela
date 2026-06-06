@@ -103,11 +103,11 @@ Dictionary literals follow the same primary-expression model:
 { "name": "Vela", count: 3 }
 ```
 
-Both dictionary keys and values are parsed with `LogicalOrExpression`. This
-keeps dictionary construction consistent with array construction: `{ y: z = 2 }`
-is rejected, while `{ y: z || fallback, count: 1 + 2 }` remains valid. A leading
-`{` at statement position still means `BlockStatement`; dictionary literals are
-parsed in expression positions such as variable initializers and call arguments.
+Dictionary keys are limited to identifiers and string literals for now. Values
+are parsed with `LogicalOrExpression`, so `{ y: z = 2 }` is rejected, while
+`{ y: z || fallback, count: 1 + 2 }` remains valid. A leading `{` at statement
+position still means `BlockStatement`; dictionary literals are parsed in
+expression positions such as variable initializers and call arguments.
 
 The OOP additions follow the same model. `statementBuilder()` routes `class` to
 a class-declaration parser, while `primaryExpressionBuilder()` routes `this` and

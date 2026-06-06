@@ -8,26 +8,26 @@
 import Foundation
 
 extension Parser {
-  // PrimaryExpression
-  //   : Literal
-  //   | ParenthesizedExpression
-  //   | ArrayLiteral
-  //   | DictionaryLiteral
-  //   | Identifier
-  //   | ThisExpression
-  //   | NewExpression
-  //   ;
-  //
-  // Examples:
-  // `42`
-  // `"hello"`
-  // `true`
-  // `x`
-  // `(1 + 2)`
-  // `[x, y + 1]`
-  // `{ "x": 1 }`
-  // `this`
-  // `new Point(1, 2)`
+  /// PrimaryExpression
+  ///   : Literal
+  ///   | ParenthesizedExpression
+  ///   | ArrayLiteral
+  ///   | DictionaryLiteral
+  ///   | Identifier
+  ///   | ThisExpression
+  ///   | NewExpression
+  ///   ;
+  ///
+  /// Examples:
+  /// `42`
+  /// `"hello"`
+  /// `true`
+  /// `x`
+  /// `(1 + 2)`
+  /// `[x, y + 1]`
+  /// `{ "x": 1 }`
+  /// `this`
+  /// `new Point(1, 2)`
   func primaryExpressionBuilder() throws -> Expression {
     if isLiteral() {
       return try literalBuilder()

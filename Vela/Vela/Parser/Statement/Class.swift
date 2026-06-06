@@ -6,14 +6,14 @@
 //
 
 extension Parser {
-  // ClassDeclaration
-  //  : 'class' Identifier OptClassExtends BlockStatement
-  //  ;
-  //
-  // Examples:
-  // `class Point {}`
-  // `class Point extends Shape {}`
-  // `class Point { def constructor(x, y) { this.x = x; this.y = y; } }`
+  /// ClassDeclaration
+  ///  : 'class' Identifier OptClassExtends BlockStatement
+  ///  ;
+  ///
+  /// Examples:
+  /// `class Point {}`
+  /// `class Point extends Shape {}`
+  /// `class Point { def constructor(x, y) { this.x = x; this.y = y; } }`
   func classDeclarationStamentBuilder() throws -> ClassDeclarationStatement {
     try eat(.KEYWORD(keyword: "class"))
     let id = try identifierBuilder()

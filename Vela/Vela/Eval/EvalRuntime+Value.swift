@@ -1,5 +1,5 @@
 //
-//  Eval+If.swift
+//  EvalRuntime+Value.swift
 //  Vela
 //
 //  Created by Tao Xu on 6/2/26.
@@ -26,6 +26,8 @@ extension EvalRuntimeValue {
       return "<native function \(function.name)>"
     case .object:
       return "<object>"
+    case let .array(array):
+      return "[\(array.elements.map { $0.displayValue }.joined(separator: ", "))]"
     case let .klass(klass):
       return "<class \(klass.name)>"
     }
@@ -53,13 +55,15 @@ extension EvalRuntimeValue {
       return [
         "type": "nativeFunction",
         "name": function.name,
-        "arity": jsonNullable(function.arity),
+        "expectedArgumentCount": jsonNullable(function.expectedArgumentCount),
       ]
     case let .object(object):
       return [
         "type": "object",
         "fields": object.fields.mapValues { $0.jsonValue },
       ]
+    case let .array(array):
+      return array.elements.map { $0.jsonValue }
     case let .klass(klass):
       return [
         "type": "class",
@@ -81,16 +85,34 @@ extension EvalRuntimeValue {
 extension EvalRuntimeValue {
   var isTruthy: Bool {
     switch self {
-    case .bool(let value):
+    case let .bool(value):
       return value
-    case .int(let value):
+    case let .int(value):
       return value > 0
-    case .double(let value):
+    case let .double(value):
       return value > 0.0
     case .null:
       return false
     default:
       return true
+    }
+  }
+
+  var toString: String? {
+    switch self {
+    case let .string(value):
+      return value
+    default:
+      return nil
+    }
+  }
+
+  var toObject: EvalRuntimeObject? {
+    switch self {
+    case let .object(obj):
+      return obj
+    default:
+      return nil
     }
   }
 }

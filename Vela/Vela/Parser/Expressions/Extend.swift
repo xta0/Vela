@@ -6,13 +6,13 @@
 //
 
 extension Parser {
-  // ClassExtends
-  //  : 'extends' Identifier
-  //  ;
-  //
-  // Examples:
-  // `extends Shape`
-  // `extends Point`
+  /// ClassExtends
+  ///  : 'extends' Identifier
+  ///  ;
+  ///
+  /// Examples:
+  /// `extends Shape`
+  /// `extends Point`
   func classExtendExpressionBuilder() throws -> Expression {
     try eat(.KEYWORD(keyword: "extends"))
     return try identifierBuilder()

@@ -6,28 +6,28 @@
 //
 
 extension Parser {
-  // LeftHandSideExpression
-  //   : MemberExpression
-  //   ;
-  //
-  // Examples:
-  // `x`
-  // `total`
+  /// LeftHandSideExpression
+  ///   : MemberExpression
+  ///   ;
+  ///
+  /// Examples:
+  /// `x`
+  /// `total`
   func leftHandSideExpressionBuilder() throws -> Expression {
     try callMemberExpressionBuilder()
   }
 
-  // CallMemberExpression
-  //  : MemberExpression
-  //  | CallExpression
-  //  ;
-  //
-  // Examples:
-  // `x`
-  // `object.property`
-  // `foo()`
-  // `foo(bar)`
-  // `super(x, y)`
+  /// CallMemberExpression
+  ///  : MemberExpression
+  ///  | CallExpression
+  ///  ;
+  ///
+  /// Examples:
+  /// `x`
+  /// `object.property`
+  /// `foo()`
+  /// `foo(bar)`
+  /// `super(x, y)`
   func callMemberExpressionBuilder() throws -> Expression {
     // super call:
     if lookahead?.type == .KEYWORD(keyword: "super") {
@@ -46,21 +46,21 @@ extension Parser {
     return callee
   }
 
-  // Generic call expression helper
-  //
-  // CallExpression
-  //  : Callee Arguments
-  //  ;
-  // Callee (chain-expression)
-  //  : MemberExpression
-  //  | CallExpression
-  //  ;
-  //
-  // Examples:
-  // `foo()`
-  // `foo(bar, baz)`
-  // `object.method()`
-  // `foo()()`
+  /// Generic call expression helper
+  ///
+  /// CallExpression
+  ///  : Callee Arguments
+  ///  ;
+  /// Callee (chain-expression)
+  ///  : MemberExpression
+  ///  | CallExpression
+  ///  ;
+  ///
+  /// Examples:
+  /// `foo()`
+  /// `foo(bar, baz)`
+  /// `object.method()`
+  /// `foo()()`
   func callExpressionBuilder(_ callee: Expression) throws -> Expression {
     let funcCallExpNode = try FuncCallExpression(callee: callee, arguments: argumentsExpressionBuilder())
     var funcCallExp = Expression.funcCallExpression(funcCallExpNode)
@@ -70,14 +70,14 @@ extension Parser {
     return funcCallExp
   }
 
-  // Arguments
-  //  : '(' OptArgList ')'
-  //  ;
-  //
-  // Examples:
-  // `()`
-  // `(x)`
-  // `(x, y)`
+  /// Arguments
+  ///  : '(' OptArgList ')'
+  ///  ;
+  ///
+  /// Examples:
+  /// `()`
+  /// `(x)`
+  /// `(x, y)`
   func argumentsExpressionBuilder() throws -> [Expression] {
     try eat(.LEFT_BRACE)
     let argListExp = lookahead?.type == .RIGHT_BRACE ? [] : try argumentListExpressionBuilder()
@@ -85,15 +85,15 @@ extension Parser {
     return argListExp
   }
 
-  // ArgumentList
-  //  : AssignmentExpression
-  //  | ArgumentLIst ',' AssignmentExpression foo(bar=1, baz=2)
-  //  ;
-  //
-  // Examples:
-  // `x`
-  // `x, y`
-  // `x = 1, y + 2`
+  /// ArgumentList
+  ///  : AssignmentExpression
+  ///  | ArgumentLIst ',' AssignmentExpression foo(bar=1, baz=2)
+  ///  ;
+  ///
+  /// Examples:
+  /// `x`
+  /// `x, y`
+  /// `x = 1, y + 2`
   func argumentListExpressionBuilder() throws -> [Expression] {
     var argList = try [assignmentExpressionBuilder()]
 
@@ -105,17 +105,17 @@ extension Parser {
     return argList
   }
 
-  // MemberExpression
-  //  : PrimaryExpression
-  //  | MemberExpression '.' Identifier
-  //  | MemberExpression '[' Expression ']'
-  //  ;
-  //
-  // Examples:
-  // `x`
-  // `object.property`
-  // `object[property]`
-  // `object.property[index]`
+  /// MemberExpression
+  ///  : PrimaryExpression
+  ///  | MemberExpression '.' Identifier
+  ///  | MemberExpression '[' Expression ']'
+  ///  ;
+  ///
+  /// Examples:
+  /// `x`
+  /// `object.property`
+  /// `object[property]`
+  /// `object.property[index]`
   func memberExpressionBuilder() throws -> Expression {
     var object = try primaryExpressionBuilder()
 

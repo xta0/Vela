@@ -1,5 +1,5 @@
 //
-//  Environment.swift
+//  EvalEnvironment.swift
 //  Vela
 //
 //  Created by Tao Xu on 6/1/26.
@@ -11,10 +11,19 @@ final class EvalEnvironment {
   private var values: [String: EvalRuntimeValue] = [:]
   private weak var parent: EvalEnvironment?
   private var children: [EvalEnvironment] = []
+  private let builtins: EvalBuiltins?
 
-  init(parent: EvalEnvironment? = nil) {
+  init(
+    parent: EvalEnvironment? = nil,
+    builtins: EvalBuiltins? = nil
+  ) {
     self.parent = parent
+    self.builtins = parent == nil ? builtins ?? .standard() : nil
     parent?.addChild(self)
+
+    if parent == nil {
+      installBuiltins()
+    }
   }
 
   func define(_ name: String, _ value: EvalRuntimeValue) {
@@ -50,6 +59,10 @@ final class EvalEnvironment {
   func clear() {
     values.removeAll()
     children.removeAll()
+
+    if parent == nil {
+      installBuiltins()
+    }
   }
 
   var jsonDescription: String {
@@ -67,6 +80,10 @@ final class EvalEnvironment {
 
   private func addChild(_ child: EvalEnvironment) {
     children.append(child)
+  }
+
+  private func installBuiltins() {
+    builtins?.install(into: self)
   }
 
   private var jsonValue: [String: Any] {

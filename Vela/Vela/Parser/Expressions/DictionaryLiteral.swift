@@ -8,22 +8,27 @@
 import Foundation
 
 extension Parser {
-  // DictionaryLiteral
-  //   : LEFT_CURLY_BRACE DictionaryEntryListOpt RIGHT_CURLY_BRACE
-  //   ;
-  //
-  // DictionaryEntryList
-  //   : DictionaryEntry
-  //   | DictionaryEntryList COMMA DictionaryEntry
-  //   ;
-  //
-  // DictionaryEntry
-  //   : LogicalOrExpression COLON LogicalOrExpression
-  //   ;
-  //
-  // Examples:
-  // `{}`
-  // `{ "name": "Vela", count: 3 }`
+  /// DictionaryLiteral
+  ///   : LEFT_CURLY_BRACE DictionaryEntryListOpt RIGHT_CURLY_BRACE
+  ///   ;
+  ///
+  /// DictionaryEntryList
+  ///   : DictionaryEntry
+  ///   | DictionaryEntryList COMMA DictionaryEntry
+  ///   ;
+  ///
+  /// DictionaryEntry
+  ///   : DictionaryKey COLON LogicalOrExpression
+  ///   ;
+  ///
+  /// DictionaryKey
+  ///   : IDENTIFIER
+  ///   | STRING
+  ///   ;
+  ///
+  /// Examples:
+  /// `{}`
+  /// `{ "name": "Vela", count: 3 }`
   func dictionaryLiteralBuilder() throws -> Expression {
     try eat(.LEFT_CURLY_BRACE)
 
@@ -37,7 +42,7 @@ extension Parser {
   }
 
   private func dictionaryEntryListBuilder() throws -> [DictionaryEntry] {
-    var entries = [try dictionaryEntryBuilder()]
+    var entries = try [dictionaryEntryBuilder()]
 
     while lookahead?.type == .COMMA {
       try eat(.COMMA)
@@ -48,10 +53,21 @@ extension Parser {
   }
 
   private func dictionaryEntryBuilder() throws -> DictionaryEntry {
-    let key = try logicalOrExpressionBuilder()
+    let key = try dictionaryKeyBuilder()
     try eat(.COLON)
     let value = try logicalOrExpressionBuilder()
 
     return DictionaryEntry(key: key, value: value)
+  }
+
+  private func dictionaryKeyBuilder() throws -> Expression {
+    switch lookahead?.type {
+    case .IDENTIFIER:
+      return try identifierBuilder()
+    case .STRING:
+      return try .stringLiteral(stringLiteralBuilder())
+    default:
+      throw ParserError.unexpectedExpressionToken(actual: lookahead?.type)
+    }
   }
 }

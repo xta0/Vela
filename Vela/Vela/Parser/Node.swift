@@ -18,6 +18,7 @@
 // ├─ ForIterationStatement
 // ├─ FunctionDeclarationStatement
 // ├─ ReturnStatement
+// ├─ BreakStatement
 // ├─ ClassDeclarationStatement
 // ├─ VariableDeclaration
 // └─ Expression
@@ -65,7 +66,7 @@ struct NullLiteral: ASTNode, Encodable {
 
 // MARK: Expression
 
-// an AST node that produces a value
+/// an AST node that produces a value
 indirect enum Expression: ASTNode {
   var type: String {
     switch self {
@@ -283,6 +284,8 @@ enum Statement: Encodable {
     case let .Iteration(s): return s.type
     case let .Function(f): return f.type
     case let .Return(r): return r.type
+    case let .Break(b): return b.type
+    case let .Continue(c): return c.type
     case let .ClassDeclaration(r): return r.type
     }
   }
@@ -295,6 +298,8 @@ enum Statement: Encodable {
   case Iteration(IterationStatement)
   case Function(FunctionDeclarationStatement)
   case Return(ReturnStatement)
+  case Break(BreakStatement)
+  case Continue(ContinueStatement)
   case ClassDeclaration(ClassDeclarationStatement)
 }
 
@@ -343,6 +348,7 @@ enum ForStatementInit: Encodable {
 
 struct WhileIterationStatement: ASTNode, Encodable {
   let type = "IterationStatement"
+  let isDoWhile: Bool
   let condition: Expression
   let body: BlockStatement
 }
@@ -365,6 +371,14 @@ struct FunctionDeclarationStatement: ASTNode, Encodable {
 struct ReturnStatement: ASTNode, Encodable {
   let type = "ReturnStatement"
   let value: Expression?
+}
+
+struct BreakStatement: ASTNode, Encodable {
+  let type = "BreakStatement"
+}
+
+struct ContinueStatement: ASTNode, Encodable {
+  let type = "ContinueStatement"
 }
 
 struct ClassDeclarationStatement: ASTNode, Encodable {

@@ -6,14 +6,14 @@
 //
 
 extension Parser {
-  // NewExpression
-  //  : 'new' MemberExpression Arguments
-  //  ;
-  //
-  // Examples:
-  // `new Point()`
-  // `new Point(1, 2)`
-  // `new MyNameSpace.Point(1, 2)`
+  /// NewExpression
+  ///  : 'new' MemberExpression Arguments
+  ///  ;
+  ///
+  /// Examples:
+  /// `new Point()`
+  /// `new Point(1, 2)`
+  /// `new MyNameSpace.Point(1, 2)`
   func newExpressionBuilder() throws -> Expression {
     try eat(.KEYWORD(keyword: "new"))
     let node = try NewExpression(

@@ -41,7 +41,7 @@
 		452F84ED2FCEA06600697B5E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 452F84C72FCEA06600697B5E /* Assets.xcassets */; };
 		452F84F02FCEA08000697B5E /* Eval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84EF2FCEA07E00697B5E /* Eval.swift */; };
 		452F84F22FCEA0A400697B5E /* EvalEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84F12FCEA0A000697B5E /* EvalEnvironment.swift */; };
-		452F84F42FCEA0E700697B5E /* Eval+BinaryExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84F32FCEA0DE00697B5E /* Eval+BinaryExpression.swift */; };
+		452F84F42FCEA0E700697B5E /* Eval+BinaryOps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84F32FCEA0DE00697B5E /* Eval+BinaryOps.swift */; };
 		452F84F62FCEA23B00697B5E /* EvalError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84F52FCEA23A00697B5E /* EvalError.swift */; };
 		452F84F82FCEA25100697B5E /* EvalRuntime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84F72FCEA24600697B5E /* EvalRuntime.swift */; };
 		452F84FA2FCEA3C300697B5E /* Eval+Statement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84F92FCEA3BF00697B5E /* Eval+Statement.swift */; };
@@ -49,6 +49,11 @@
 		452F84FE2FCEA60000697B5E /* ArrayLiteral.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84FD2FCEA60000697B5E /* ArrayLiteral.swift */; };
 		452F85012FCF000000697B5E /* DictionaryLiteral.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F85002FCF000000697B5E /* DictionaryLiteral.swift */; };
 		452F850A2FCFE77900697B5E /* EvalRuntime+Value.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F85092FCFE77700697B5E /* EvalRuntime+Value.swift */; };
+		452F850C2FD09E8E00697B5E /* Eval+LogicalOps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F850B2FD09E8900697B5E /* Eval+LogicalOps.swift */; };
+		452F850E2FD0B5B000697B5E /* EvalEnvironment+Builtins.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F850D2FD0B5B000697B5E /* EvalEnvironment+Builtins.swift */; };
+		452F85102FD0CC2000697B5E /* EvalEnvironment+ArrayBuiltins.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F850F2FD0CC2000697B5E /* EvalEnvironment+ArrayBuiltins.swift */; };
+		452F85122FD0CC2100697B5E /* EvalEnvironment+DictionaryBuiltins.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F85112FD0CC2100697B5E /* EvalEnvironment+DictionaryBuiltins.swift */; };
+		452F851A2FD4A32500697B5E /* EvalEnvironment+StringBuiltins.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F85192FD4A31700697B5E /* EvalEnvironment+StringBuiltins.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -107,7 +112,7 @@
 		452F84CA2FCEA06600697B5E /* VelaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VelaApp.swift; sourceTree = "<group>"; };
 		452F84EF2FCEA07E00697B5E /* Eval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Eval.swift; sourceTree = "<group>"; };
 		452F84F12FCEA0A000697B5E /* EvalEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvalEnvironment.swift; sourceTree = "<group>"; };
-		452F84F32FCEA0DE00697B5E /* Eval+BinaryExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Eval+BinaryExpression.swift"; sourceTree = "<group>"; };
+		452F84F32FCEA0DE00697B5E /* Eval+BinaryOps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Eval+BinaryOps.swift"; sourceTree = "<group>"; };
 		452F84F52FCEA23A00697B5E /* EvalError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvalError.swift; sourceTree = "<group>"; };
 		452F84F72FCEA24600697B5E /* EvalRuntime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvalRuntime.swift; sourceTree = "<group>"; };
 		452F84F92FCEA3BF00697B5E /* Eval+Statement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Eval+Statement.swift"; sourceTree = "<group>"; };
@@ -115,6 +120,11 @@
 		452F84FD2FCEA60000697B5E /* ArrayLiteral.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayLiteral.swift; sourceTree = "<group>"; };
 		452F85002FCF000000697B5E /* DictionaryLiteral.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryLiteral.swift; sourceTree = "<group>"; };
 		452F85092FCFE77700697B5E /* EvalRuntime+Value.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EvalRuntime+Value.swift"; sourceTree = "<group>"; };
+		452F850B2FD09E8900697B5E /* Eval+LogicalOps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Eval+LogicalOps.swift"; sourceTree = "<group>"; };
+		452F850D2FD0B5B000697B5E /* EvalEnvironment+Builtins.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EvalEnvironment+Builtins.swift"; sourceTree = "<group>"; };
+		452F850F2FD0CC2000697B5E /* EvalEnvironment+ArrayBuiltins.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EvalEnvironment+ArrayBuiltins.swift"; sourceTree = "<group>"; };
+		452F85112FD0CC2100697B5E /* EvalEnvironment+DictionaryBuiltins.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EvalEnvironment+DictionaryBuiltins.swift"; sourceTree = "<group>"; };
+		452F85192FD4A31700697B5E /* EvalEnvironment+StringBuiltins.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EvalEnvironment+StringBuiltins.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -226,7 +236,7 @@
 		452F84CB2FCEA06600697B5E /* Vela */ = {
 			isa = PBXGroup;
 			children = (
-				452F84EE2FCEA07600697B5E /* Interpreter */,
+				452F84EE2FCEA07600697B5E /* Eval */,
 				452F84C62FCEA06600697B5E /* Parser */,
 				452F84C72FCEA06600697B5E /* Assets.xcassets */,
 				452F84C82FCEA06600697B5E /* ContentView.swift */,
@@ -236,7 +246,7 @@
 			path = Vela;
 			sourceTree = "<group>";
 		};
-		452F84EE2FCEA07600697B5E /* Interpreter */ = {
+		452F84EE2FCEA07600697B5E /* Eval */ = {
 			isa = PBXGroup;
 			children = (
 				452F84EF2FCEA07E00697B5E /* Eval.swift */,
@@ -244,11 +254,16 @@
 				452F85092FCFE77700697B5E /* EvalRuntime+Value.swift */,
 				452F84F52FCEA23A00697B5E /* EvalError.swift */,
 				452F84F12FCEA0A000697B5E /* EvalEnvironment.swift */,
+				452F850D2FD0B5B000697B5E /* EvalEnvironment+Builtins.swift */,
+				452F850F2FD0CC2000697B5E /* EvalEnvironment+ArrayBuiltins.swift */,
+				452F85112FD0CC2100697B5E /* EvalEnvironment+DictionaryBuiltins.swift */,
+				452F85192FD4A31700697B5E /* EvalEnvironment+StringBuiltins.swift */,
+				452F84F32FCEA0DE00697B5E /* Eval+BinaryOps.swift */,
+				452F850B2FD09E8900697B5E /* Eval+LogicalOps.swift */,
 				452F84FB2FCEA44800697B5E /* Eval+Expressions.swift */,
-				452F84F32FCEA0DE00697B5E /* Eval+BinaryExpression.swift */,
 				452F84F92FCEA3BF00697B5E /* Eval+Statement.swift */,
 			);
-			path = Interpreter;
+			path = Eval;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -398,6 +413,9 @@
 				452F84D12FCEA06600697B5E /* Identifier.swift in Sources */,
 				452F84D22FCEA06600697B5E /* LHS.swift in Sources */,
 				452F84F22FCEA0A400697B5E /* EvalEnvironment.swift in Sources */,
+				452F850E2FD0B5B000697B5E /* EvalEnvironment+Builtins.swift in Sources */,
+				452F85102FD0CC2000697B5E /* EvalEnvironment+ArrayBuiltins.swift in Sources */,
+				452F85122FD0CC2100697B5E /* EvalEnvironment+DictionaryBuiltins.swift in Sources */,
 				452F84D32FCEA06600697B5E /* Literal.swift in Sources */,
 				452F84D42FCEA06600697B5E /* Logical.swift in Sources */,
 				452F84D52FCEA06600697B5E /* New.swift in Sources */,
@@ -423,12 +441,14 @@
 				452F84E42FCEA06600697B5E /* Node.swift in Sources */,
 				452F84E52FCEA06600697B5E /* Node+Debug.swift in Sources */,
 				452F84E62FCEA06600697B5E /* Parser.swift in Sources */,
+				452F851A2FD4A32500697B5E /* EvalEnvironment+StringBuiltins.swift in Sources */,
 				452F84E72FCEA06600697B5E /* Token.swift in Sources */,
+				452F850C2FD09E8E00697B5E /* Eval+LogicalOps.swift in Sources */,
 				452F84F82FCEA25100697B5E /* EvalRuntime.swift in Sources */,
 				452F850A2FCFE77900697B5E /* EvalRuntime+Value.swift in Sources */,
 				452F84E82FCEA06600697B5E /* Tokenizer.swift in Sources */,
 				452F84E92FCEA06600697B5E /* ContentView.swift in Sources */,
-				452F84F42FCEA0E700697B5E /* Eval+BinaryExpression.swift in Sources */,
+				452F84F42FCEA0E700697B5E /* Eval+BinaryOps.swift in Sources */,
 				452F84F62FCEA23B00697B5E /* EvalError.swift in Sources */,
 				452F84EA2FCEA06600697B5E /* VelaApp.swift in Sources */,
 			);

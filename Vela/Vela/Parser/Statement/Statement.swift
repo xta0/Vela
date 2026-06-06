@@ -6,17 +6,17 @@
 //
 
 extension Parser {
-  // StatementList
-  //   : Statement
-  //   | StatementList Statement
-  //   ;
-  //
-  // Examples:
-  // `1;`
-  // `1; 2; let x = 3;`
-  //
-  // A StatementList is parsed with a loop because direct left recursion does
-  // not terminate in recursive descent parsers.
+  /// StatementList
+  ///   : Statement
+  ///   | StatementList Statement
+  ///   ;
+  ///
+  /// Examples:
+  /// `1;`
+  /// `1; 2; let x = 3;`
+  ///
+  /// A StatementList is parsed with a loop because direct left recursion does
+  /// not terminate in recursive descent parsers.
   func statementListBuilder(stopTokenType: TokenType? = nil) throws -> [Statement] {
     let stat = try statementBuilder()
     print("[Parser] Add statement to list: [\(stat.type)]")
@@ -31,27 +31,30 @@ extension Parser {
     return statements
   }
 
-  // Statement
-  //   : ExpressionStatement
-  //   | BlockStatement
-  //   | EmptyStatement
-  //   | VariableStatement
-  //   | IfStatement
-  //   | IterationStatement
-  //   | FunctionDeclaration
-  //   | ReturnStatement
-  //   ;
-  //
-  // Examples:
-  // `;`
-  // `{ 1; }`
-  // `let x = 1;`
-  // `if (x) {}`
-  // `while (x) {}`
-  // `for (;;) {}`
-  // `def add(x, y) { return x + y; }`
-  // `return x;`
-  // `x + 1;`
+  /// Statement
+  ///   : ExpressionStatement
+  ///   | BlockStatement
+  ///   | EmptyStatement
+  ///   | VariableStatement
+  ///   | IfStatement
+  ///   | IterationStatement
+  ///   | FunctionDeclaration
+  ///   | ReturnStatement
+  ///   | BreakStatement
+  ///   | ContinueStatement
+  ///   ;
+  ///
+  /// Examples:
+  /// `;`
+  /// `{ 1; }`
+  /// `let x = 1;`
+  /// `if (x) {}`
+  /// `while (x) {}`
+  /// `for (;;) {}`
+  /// `def add(x, y) { return x + y; }`
+  /// `return x;`
+  /// `break;`
+  /// `x + 1;`
   func statementBuilder() throws -> Statement {
     guard let lookahead else {
       throw ParserError.unexpectedLiteralProduction
@@ -69,6 +72,10 @@ extension Parser {
       return try .Function(functionDeclarationBuilder())
     case .KEYWORD(keyword: "return"):
       return try .Return(returnStatementBuilder())
+    case .KEYWORD(keyword: "break"):
+      return try .Break(breakStatementBuilder())
+    case .KEYWORD(keyword: "continue"):
+      return try .Continue(continueStatementBuilder())
     case .KEYWORD(keyword: "while"),
          .KEYWORD(keyword: "do"),
          .KEYWORD(keyword: "for"):

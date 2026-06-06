@@ -92,6 +92,10 @@ private struct ASTPrinter {
         to: &lines,
         prefix: childPrefix(prefix, isLast: isLast)
       )
+    case .Break:
+      break
+    case .Continue:
+      break
     case let .ClassDeclaration(classStatement):
       appendClassDeclaration(
         classStatement,
@@ -340,6 +344,10 @@ private struct ASTPrinter {
       return "FunctionDeclaration \(function.name)"
     case .Return:
       return "ReturnStatement"
+    case .Break:
+      return "BreakStatement"
+    case .Continue:
+      return "ContinueStatement"
     case let .ClassDeclaration(classStatement):
       return "ClassDeclaration \(className(classStatement.id))"
     }

@@ -6,16 +6,16 @@
 //
 
 extension Parser {
-  // IterationStatement
-  //   : WhileStatement
-  //   | DoWhileStatement
-  //   | ForStatement
-  //   ;
-  //
-  // Examples:
-  // `while (x) {}`
-  // `do {} while (x);`
-  // `for (let i = 0; i < 10; i = i + 1) {}`
+  /// IterationStatement
+  ///   : WhileStatement
+  ///   | DoWhileStatement
+  ///   | ForStatement
+  ///   ;
+  ///
+  /// Examples:
+  /// `while (x) {}`
+  /// `do {} while (x);`
+  /// `for (let i = 0; i < 10; i = i + 1) {}`
   func iterationStatementBuilder() throws -> IterationStatement {
     let op = lookahead?.type
     switch op {
@@ -30,30 +30,30 @@ extension Parser {
     }
   }
 
-  // WhileStatement
-  //   : KEYWORD("while") LEFT_BRACE Expression RIGHT_BRACE BlockStatement
-  //   ;
-  //
-  // Examples:
-  // `while (x) {}`
-  // `while (x < 10) { x = x + 1; }`
+  /// WhileStatement
+  ///   : KEYWORD("while") LEFT_BRACE Expression RIGHT_BRACE BlockStatement
+  ///   ;
+  ///
+  /// Examples:
+  /// `while (x) {}`
+  /// `while (x < 10) { x = x + 1; }`
   private func whileStatement() throws -> IterationStatement {
     try eat(.KEYWORD(keyword: "while"))
     try eat(.LEFT_BRACE)
     let condition = try expressionBuilder()
     try eat(.RIGHT_BRACE)
     let block = try blockStatementBuilder()
-    let statement = WhileIterationStatement(condition: condition, body: block)
+    let statement = WhileIterationStatement(isDoWhile: false, condition: condition, body: block)
     return .whileLoop(statement)
   }
 
-  // DoWhileStatement
-  //   : KEYWORD("do") BlockStatement KEYWORD("while") LEFT_BRACE Expression RIGHT_BRACE SEMICOLON
-  //   ;
-  //
-  // Examples:
-  // `do {} while (x);`
-  // `do { x = x + 1; } while (x < 10);`
+  /// DoWhileStatement
+  ///   : KEYWORD("do") BlockStatement KEYWORD("while") LEFT_BRACE Expression RIGHT_BRACE SEMICOLON
+  ///   ;
+  ///
+  /// Examples:
+  /// `do {} while (x);`
+  /// `do { x = x + 1; } while (x < 10);`
   private func doWhileStatement() throws -> IterationStatement {
     try eat(.KEYWORD(keyword: "do"))
     let block = try blockStatementBuilder()
@@ -62,17 +62,17 @@ extension Parser {
     let condition = try expressionBuilder()
     try eat(.RIGHT_BRACE)
     try eat(.SEMICOLON)
-    let statement = WhileIterationStatement(condition: condition, body: block)
+    let statement = WhileIterationStatement(isDoWhile: true, condition: condition, body: block)
     return .whileLoop(statement)
   }
 
-  // ForStatement
-  //   : KEYWORD("for") LEFT_BRACE ForStatementInit? SEMICOLON Expression? SEMICOLON Expression? RIGHT_BRACE BlockStatement
-  //   ;
-  //
-  // Examples:
-  // `for (;;) {}`
-  // `for (let i = 0; i < 10; i = i + 1) {}`
+  /// ForStatement
+  ///   : KEYWORD("for") LEFT_BRACE ForStatementInit? SEMICOLON Expression? SEMICOLON Expression? RIGHT_BRACE BlockStatement
+  ///   ;
+  ///
+  /// Examples:
+  /// `for (;;) {}`
+  /// `for (let i = 0; i < 10; i = i + 1) {}`
   private func forStatement() throws -> IterationStatement {
     try eat(.KEYWORD(keyword: "for"))
     try eat(.LEFT_BRACE)
@@ -90,14 +90,14 @@ extension Parser {
     return .forLoop(statement)
   }
 
-  // ForStatementInit
-  //   : VariableStatementInit
-  //   | Expression
-  //   ;
-  //
-  // Examples:
-  // `let i = 0`
-  // `i = 0`
+  /// ForStatementInit
+  ///   : VariableStatementInit
+  ///   | Expression
+  ///   ;
+  ///
+  /// Examples:
+  /// `let i = 0`
+  /// `i = 0`
   private func forStatementInit() throws -> ForStatementInit {
     if lookahead?.type == .KEYWORD(keyword: "let") {
       return try .variable(variableStatementInitBuilder())

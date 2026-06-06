@@ -185,6 +185,20 @@ struct VelaParserTests {
     #expect(statement.value == nil)
   }
 
+  @Test func parsesBreakStatement() throws {
+    let program = try parseProgram("break;")
+
+    #expect(program.body.count == 1)
+    _ = try breakStatement(program.body[0])
+  }
+
+  @Test func parsesContinueStatement() throws {
+    let program = try parseProgram("continue;")
+
+    #expect(program.body.count == 1)
+    _ = try continueStatement(program.body[0])
+  }
+
   @Test func parsesKeywordPrefixAsIdentifier() throws {
     let program = try parseProgram("returnValue;")
 
@@ -275,6 +289,7 @@ struct VelaParserTests {
 
     #expect(program.body.count == 1)
     let whileStatement = try whileIterationStatement(program.body[0])
+    #expect(whileStatement.isDoWhile == false)
 
     let condition = try binaryExpression(whileStatement.condition)
     #expect(condition.operatorValue == "<")
@@ -293,6 +308,7 @@ struct VelaParserTests {
 
     #expect(program.body.count == 1)
     let doWhileStatement = try whileIterationStatement(program.body[0])
+    #expect(doWhileStatement.isDoWhile == true)
 
     #expect(doWhileStatement.body.body.count == 1)
     let bodyExpression = try expressionStatementValue(doWhileStatement.body.body[0])
@@ -922,6 +938,20 @@ struct VelaParserTests {
     #expect(parser.results.contains("SIMPLE_ASSIGNMENT"))
   }
 
+  @Test func parseFailsForNonIdentifierOrStringDictionaryKey() throws {
+    for source in [
+      "let config = { null: 1 };",
+      "let config = { 1: 2 };",
+      "let config = { true: false };",
+    ] {
+      let parser = Parser()
+      let program = try parser.parse(source)
+
+      #expect(program == nil)
+      #expect(parser.results.contains("Unexpected expression token"))
+    }
+  }
+
   @Test func parsesMemberCallExpression() throws {
     let program = try parseProgram("object.method();")
     let expression = try expressionStatementValue(program.body[0])
@@ -1321,6 +1351,24 @@ private func returnStatement(_ statement: Statement) throws -> ReturnStatement {
   }
 
   return returnStatement
+}
+
+private func breakStatement(_ statement: Statement) throws -> BreakStatement {
+  guard case let .Break(breakStatement) = statement else {
+    Issue.record("Expected BreakStatement")
+    throw TestFailure()
+  }
+
+  return breakStatement
+}
+
+private func continueStatement(_ statement: Statement) throws -> ContinueStatement {
+  guard case let .Continue(continueStatement) = statement else {
+    Issue.record("Expected ContinueStatement")
+    throw TestFailure()
+  }
+
+  return continueStatement
 }
 
 private func iterationStatement(_ statement: Statement) throws -> IterationStatement {

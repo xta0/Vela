@@ -6,14 +6,14 @@
 //
 
 extension Parser {
-  // ExpressionStatement
-  //   : Expression SEMICOLON
-  //   ;
-  //
-  // Examples:
-  // `1 + 2;`
-  // `x = y;`
-  // `!x;`
+  /// ExpressionStatement
+  ///   : Expression SEMICOLON
+  ///   ;
+  ///
+  /// Examples:
+  /// `1 + 2;`
+  /// `x = y;`
+  /// `!x;`
   func expressionStatementBuilder() throws -> ExpressionStatement {
     let expr = try expressionBuilder()
     try eat(.SEMICOLON)

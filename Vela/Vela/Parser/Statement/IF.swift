@@ -6,14 +6,14 @@
 //
 
 extension Parser {
-  // IfStatement
-  //   : KEYWORD("if") LEFT_BRACE Expression RIGHT_BRACE BlockStatement
-  //   | KEYWORD("if") LEFT_BRACE Expression RIGHT_BRACE BlockStatement KEYWORD("else") BlockStatement
-  //   ;
-  //
-  // Examples:
-  // `if (x) {}`
-  // `if (x > 0) { y; } else { z; }`
+  /// IfStatement
+  ///   : KEYWORD("if") LEFT_BRACE Expression RIGHT_BRACE BlockStatement
+  ///   | KEYWORD("if") LEFT_BRACE Expression RIGHT_BRACE BlockStatement KEYWORD("else") BlockStatement
+  ///   ;
+  ///
+  /// Examples:
+  /// `if (x) {}`
+  /// `if (x > 0) { y; } else { z; }`
   func ifStatementBuilder() throws -> IFStatement {
     try eat(.KEYWORD(keyword: "if"))
     try eat(.LEFT_BRACE)

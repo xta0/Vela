@@ -26,7 +26,7 @@ final class Tokenizer {
     return cursor < input.endIndex
   }
 
-  // Lazy generation: we don't tokenize the input at once
+  /// Lazy generation: we don't tokenize the input at once
   func getNextToken() throws(LexerError) -> Token? {
     print("getNextToken()")
     guard hasMoreTokens() else {
@@ -93,6 +93,8 @@ final class Tokenizer {
     "do",
     "def",
     "return",
+    "break",
+    "continue",
     "class",
     "extends",
     "super",

@@ -6,13 +6,13 @@
 //
 
 extension Parser {
-  // BlockStatement
-  //   : LEFT_CURLY_BRACE StatementList? RIGHT_CURLY_BRACE
-  //   ;
-  //
-  // Examples:
-  // `{}`
-  // `{ 1; let x = 2; }`
+  /// BlockStatement
+  ///   : LEFT_CURLY_BRACE StatementList? RIGHT_CURLY_BRACE
+  ///   ;
+  ///
+  /// Examples:
+  /// `{}`
+  /// `{ 1; let x = 2; }`
   func blockStatementBuilder() throws -> BlockStatement {
     try eat(.LEFT_CURLY_BRACE)
 

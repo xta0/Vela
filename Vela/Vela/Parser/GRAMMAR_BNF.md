@@ -366,7 +366,12 @@ DictionaryEntryList
   ;
 
 DictionaryEntry
-  : LogicalOrExpression COLON LogicalOrExpression
+  : DictionaryKey COLON LogicalOrExpression
+  ;
+
+DictionaryKey
+  : IDENTIFIER
+  | STRING
   ;
 
 ThisExpression

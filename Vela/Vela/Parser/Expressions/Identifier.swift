@@ -8,13 +8,13 @@
 // MARK: Identifier
 
 extension Parser {
-  // Identifier
-  //   : IDENTIFIER
-  //   ;
-  //
-  // Examples:
-  // `x`
-  // `total`
+  /// Identifier
+  ///   : IDENTIFIER
+  ///   ;
+  ///
+  /// Examples:
+  /// `x`
+  /// `total`
   func identifierBuilder() throws -> Expression {
     let name = try eat(.IDENTIFIER).value
     return .identifierExpression(IdentifierExpression(value: name))

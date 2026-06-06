@@ -1,5 +1,5 @@
 //
-//  Error.swift
+//  EvalError.swift
 //  Vela
 //
 //  Created by Tao Xu on 6/1/26.
@@ -12,6 +12,10 @@ enum EvalRuntimeError: Error, CustomStringConvertible {
   case notCallable(EvalRuntimeValue)
   case arityMismatch(expected: Int, got: Int)
   case unimplemented(String)
+  case internalError(String)
+  case breakSignal
+  case continueSignal
+  case returnSignal(EvalRuntimeValue)
 
   var description: String {
     switch self {
@@ -27,6 +31,14 @@ enum EvalRuntimeError: Error, CustomStringConvertible {
       return "Arity mismatch: expected \(expected), got \(got)"
     case let .unimplemented(node):
       return "Eval is not implemented for: \(node)"
+    case let .internalError(err):
+      return "Internal error: \(err)"
+    case .breakSignal:
+      return "Break outside of loop"
+    case .continueSignal:
+      return "Continue the loop"
+    case .returnSignal:
+      return "Return outside of function"
     }
   }
 }

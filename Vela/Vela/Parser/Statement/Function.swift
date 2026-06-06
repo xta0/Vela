@@ -6,13 +6,13 @@
 //
 
 extension Parser {
-  // FunctionDeclaration
-  //   : KEYWORD("def") Identifier LEFT_BRACE FormalParameterList? RIGHT_BRACE BlockStatement
-  //   ;
-  //
-  // Examples:
-  // `def noop() {}`
-  // `def add(x, y) { return x + y; }`
+  /// FunctionDeclaration
+  ///   : KEYWORD("def") Identifier LEFT_BRACE FormalParameterList? RIGHT_BRACE BlockStatement
+  ///   ;
+  ///
+  /// Examples:
+  /// `def noop() {}`
+  /// `def add(x, y) { return x + y; }`
   func functionDeclarationBuilder() throws -> FunctionDeclarationStatement {
     try eat(.KEYWORD(keyword: "def"))
     let exp = try identifierBuilder()
@@ -32,13 +32,13 @@ extension Parser {
     return FunctionDeclarationStatement(name: funcName.value, params: params, body: body)
   }
 
-  // ReturnStatement
-  //   : KEYWORD("return") Expression? SEMICOLON
-  //   ;
-  //
-  // Examples:
-  // `return;`
-  // `return x + 1;`
+  /// ReturnStatement
+  ///   : KEYWORD("return") Expression? SEMICOLON
+  ///   ;
+  ///
+  /// Examples:
+  /// `return;`
+  /// `return x + 1;`
   func returnStatementBuilder() throws -> ReturnStatement {
     try eat(.KEYWORD(keyword: "return"))
     if lookahead?.type == .SEMICOLON {
@@ -50,14 +50,38 @@ extension Parser {
     return ReturnStatement(value: exp)
   }
 
-  // FormalParameterList
-  //   : Identifier
-  //   | FormalParameterList COMMA Identifier
-  //   ;
-  //
-  // Examples:
-  // `x`
-  // `x, y, z`
+  /// BreakStatement
+  ///   : KEYWORD("break") SEMICOLON
+  ///   ;
+  ///
+  /// Examples:
+  /// `break;`
+  func breakStatementBuilder() throws -> BreakStatement {
+    try eat(.KEYWORD(keyword: "break"))
+    try eat(.SEMICOLON)
+    return BreakStatement()
+  }
+
+  /// ContinueStatement
+  ///   : KEYWORD("continue") SEMICOLON
+  ///   ;
+  ///
+  /// Examples:
+  /// `continue;`
+  func continueStatementBuilder() throws -> ContinueStatement {
+    try eat(.KEYWORD(keyword: "continue"))
+    try eat(.SEMICOLON)
+    return ContinueStatement()
+  }
+
+  /// FormalParameterList
+  ///   : Identifier
+  ///   | FormalParameterList COMMA Identifier
+  ///   ;
+  ///
+  /// Examples:
+  /// `x`
+  /// `x, y, z`
   private func formalParameterListBuilder() throws -> [String] {
     var params: [String] = []
     let exp = try identifierBuilder()

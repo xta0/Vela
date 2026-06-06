@@ -8,20 +8,20 @@
 import Foundation
 
 extension Parser {
-  // AssignmentExpression
-  //   : LogicalOrExpression
-  //   | LeftHandSideExpression AssignmentOperator AssignmentExpression
-  //   ;
-  //
-  // Examples:
-  // `x`
-  // `x = 1`
-  // `x += y`
-  // `x = y = 1`
-  //
-  // Assignment is right-associative and should delegate to the next tighter
-  // expression level for its non-assignment fallback. Logical OR is the next
-  // tighter level, so `x = a || b` parses as `x = (a || b)`.
+  /// AssignmentExpression
+  ///   : LogicalOrExpression
+  ///   | LeftHandSideExpression AssignmentOperator AssignmentExpression
+  ///   ;
+  ///
+  /// Examples:
+  /// `x`
+  /// `x = 1`
+  /// `x += y`
+  /// `x = y = 1`
+  ///
+  /// Assignment is right-associative and should delegate to the next tighter
+  /// expression level for its non-assignment fallback. Logical OR is the next
+  /// tighter level, so `x = a || b` parses as `x = (a || b)`.
   func assignmentExpressionBuilder() throws -> Expression {
     // First parse the next tighter expression level. If no assignment operator
     // follows, this is not an assignment; return that expression unchanged.
@@ -48,17 +48,17 @@ extension Parser {
     )
   }
 
-  // AssignmentOperator
-  //   : SIMPLE_ASSIGNMENT
-  //   | COMPLEX_ASSIGNMENT
-  //   ;
-  //
-  // Examples:
-  // `=`
-  // `+=`
-  // `-=`
-  // `*=`
-  // `/=`
+  /// AssignmentOperator
+  ///   : SIMPLE_ASSIGNMENT
+  ///   | COMPLEX_ASSIGNMENT
+  ///   ;
+  ///
+  /// Examples:
+  /// `=`
+  /// `+=`
+  /// `-=`
+  /// `*=`
+  /// `/=`
   private func assignmentOperator() throws -> Token {
     if lookahead?.type == .SIMPLE_ASSIGNMENT {
       return try eat(.SIMPLE_ASSIGNMENT)

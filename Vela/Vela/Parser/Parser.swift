@@ -86,13 +86,13 @@ final class Parser: ObservableObject {
     return token
   }
 
-  // Program
-  //   : StatementList
-  //   ;
-  //
-  // Examples:
-  // `1;`
-  // `let x = 1; x + 2;`
+  /// Program
+  ///   : StatementList
+  ///   ;
+  ///
+  /// Examples:
+  /// `1;`
+  /// `let x = 1; x + 2;`
   func programBuilder() throws -> Program {
     try Program(body: statementListBuilder())
   }

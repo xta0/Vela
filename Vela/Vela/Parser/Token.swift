@@ -167,6 +167,8 @@ extension Token {
     TokenSpec(regex: /^\bdo\b/, type: .KEYWORD(keyword: "do")),
     TokenSpec(regex: /^\bdef\b/, type: .KEYWORD(keyword: "def")),
     TokenSpec(regex: /^\breturn\b/, type: .KEYWORD(keyword: "return")),
+    TokenSpec(regex: /^\bbreak\b/, type: .KEYWORD(keyword: "break")),
+    TokenSpec(regex: /^\bcontinue\b/, type: .KEYWORD(keyword: "continue")),
     TokenSpec(regex: /^\bclass\b/, type: .KEYWORD(keyword: "class")),
     TokenSpec(regex: /^\bextends\b/, type: .KEYWORD(keyword: "extends")),
     TokenSpec(regex: /^\bsuper\b/, type: .KEYWORD(keyword: "super")),

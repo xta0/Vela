@@ -5,7 +5,7 @@
 //  Created by Tao Xu on 6/1/26.
 //
 
-struct Eval {
+enum Eval {
   static let globalEnv = EvalEnvironment()
 
   static func eval(_ program: Program) throws(EvalRuntimeError) -> EvalRuntimeValue {

@@ -8,18 +8,18 @@
 import Foundation
 
 extension Parser {
-  // ArrayLiteral
-  //   : LEFT_SQUARE_BRACKET ArrayElementListOpt RIGHT_SQUARE_BRACKET
-  //   ;
-  //
-  // ArrayElementList
-  //   : LogicalOrExpression
-  //   | ArrayElementList COMMA LogicalOrExpression
-  //   ;
-  //
-  // Examples:
-  // `[]`
-  // `[x, y + 1, foo()]`
+  /// ArrayLiteral
+  ///   : LEFT_SQUARE_BRACKET ArrayElementListOpt RIGHT_SQUARE_BRACKET
+  ///   ;
+  ///
+  /// ArrayElementList
+  ///   : LogicalOrExpression
+  ///   | ArrayElementList COMMA LogicalOrExpression
+  ///   ;
+  ///
+  /// Examples:
+  /// `[]`
+  /// `[x, y + 1, foo()]`
   func arrayLiteralBuilder() throws -> Expression {
     try eat(.LEFT_SQUARE_BRACKET)
 
@@ -33,7 +33,7 @@ extension Parser {
   }
 
   private func arrayElementListBuilder() throws -> [Expression] {
-    var elements = [try logicalOrExpressionBuilder()]
+    var elements = try [logicalOrExpressionBuilder()]
 
     while lookahead?.type == .COMMA {
       try eat(.COMMA)

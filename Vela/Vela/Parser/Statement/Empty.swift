@@ -6,12 +6,12 @@
 //
 
 extension Parser {
-  // EmptyStatement
-  //   : SEMICOLON
-  //   ;
-  //
-  // Examples:
-  // `;`
+  /// EmptyStatement
+  ///   : SEMICOLON
+  ///   ;
+  ///
+  /// Examples:
+  /// `;`
   func emptyStatementBuilder() throws -> EmptyStatement {
     try eat(.SEMICOLON)
     return EmptyStatement()
