@@ -13,7 +13,7 @@ extension Parser {
   /// Examples:
   /// `class Point {}`
   /// `class Point extends Shape {}`
-  /// `class Point { def constructor(x, y) { this.x = x; this.y = y; } }`
+  /// `class Point { def init(x, y) { self.x = x; self.y = y; } }`
   func classDeclarationStamentBuilder() throws -> ClassDeclarationStatement {
     try eat(.KEYWORD(keyword: "class"))
     let id = try identifierBuilder()
@@ -21,6 +21,8 @@ extension Parser {
     if lookahead?.type == .KEYWORD(keyword: "extends") {
       classExtendExp = try classExtendExpressionBuilder()
     }
+    // Class bodies currently reuse BlockStatement syntax, but evaluation only
+    // supports function declarations as methods.
     let body = try blockStatementBuilder()
     return ClassDeclarationStatement(id: id, superClass: classExtendExp, body: body)
   }

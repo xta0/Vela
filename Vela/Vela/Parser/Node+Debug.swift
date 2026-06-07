@@ -377,8 +377,8 @@ private struct ASTPrinter {
       return "MemberExpression (\(node.computed ? "computed" : "property"))"
     case .funcCallExpression:
       return "FuncCallExpression"
-    case .thisExpression:
-      return "ThisExpression"
+    case .selfExpression:
+      return "SelfExpression"
     case .superExpression:
       return "SuperExpression"
     case .newExpression:

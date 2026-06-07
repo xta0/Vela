@@ -997,36 +997,36 @@ struct VelaParserTests {
     #expect(classDeclaration.body.body.isEmpty)
   }
 
-  @Test func parsesThisMemberAssignmentInClassMethod() throws {
+  @Test func parsesSelfMemberAssignmentInClassMethod() throws {
     let program = try parseProgram(
-      "class Point { def constructor(x, y) { this.x = x; this.y = y; } }"
+      "class Point { def init(x, y) { self.x = x; self.y = y; } }"
     )
 
     let classDeclaration = try classDeclarationStatement(program.body[0])
     #expect(try identifierValue(classDeclaration.id) == "Point")
     #expect(classDeclaration.body.body.count == 1)
 
-    let constructor = try functionDeclarationStatement(classDeclaration.body.body[0])
-    #expect(constructor.name == "constructor")
-    #expect(constructor.params == ["x", "y"])
-    #expect(constructor.body.body.count == 2)
+    let initializer = try functionDeclarationStatement(classDeclaration.body.body[0])
+    #expect(initializer.name == "init")
+    #expect(initializer.params == ["x", "y"])
+    #expect(initializer.body.body.count == 2)
 
-    let firstAssignment = try assignmentExpression(expressionStatementValue(constructor.body.body[0]))
+    let firstAssignment = try assignmentExpression(expressionStatementValue(initializer.body.body[0]))
     #expect(firstAssignment.operatorValue == "=")
     #expect(try identifierValue(firstAssignment.right) == "x")
 
     let firstTarget = try memberExpression(firstAssignment.left)
     #expect(firstTarget.computed == false)
-    try requireThisExpression(firstTarget.object)
+    try requireSelfExpression(firstTarget.object)
     #expect(try identifierValue(firstTarget.property) == "x")
 
-    let secondAssignment = try assignmentExpression(expressionStatementValue(constructor.body.body[1]))
+    let secondAssignment = try assignmentExpression(expressionStatementValue(initializer.body.body[1]))
     #expect(secondAssignment.operatorValue == "=")
     #expect(try identifierValue(secondAssignment.right) == "y")
 
     let secondTarget = try memberExpression(secondAssignment.left)
     #expect(secondTarget.computed == false)
-    try requireThisExpression(secondTarget.object)
+    try requireSelfExpression(secondTarget.object)
     #expect(try identifierValue(secondTarget.property) == "y")
   }
 
@@ -1058,14 +1058,14 @@ struct VelaParserTests {
 
   @Test func parsesSuperCallInClassMethod() throws {
     let program = try parseProgram(
-      "class Child extends Parent { def constructor(x) { super(x); } }"
+      "class Child extends Parent { def init(x) { super(x); } }"
     )
 
     let classDeclaration = try classDeclarationStatement(program.body[0])
     #expect(try identifierValue(#require(classDeclaration.superClass)) == "Parent")
 
-    let constructor = try functionDeclarationStatement(classDeclaration.body.body[0])
-    let call = try funcCallExpression(expressionStatementValue(constructor.body.body[0]))
+    let initializer = try functionDeclarationStatement(classDeclaration.body.body[0])
+    let call = try funcCallExpression(expressionStatementValue(initializer.body.body[0]))
     try requireSuperExpression(call.callee)
     #expect(call.arguments.count == 1)
     #expect(try identifierValue(call.arguments[0]) == "x")
@@ -1073,13 +1073,13 @@ struct VelaParserTests {
 
   @Test func debugTreeIncludesOOPNodes() throws {
     let program = try parseProgram(
-      "class Child extends Parent { def constructor(x) { this.x = x; super(x); } } let child = new Child(1);"
+      "class Child extends Parent { def init(x) { self.x = x; super(x); } } let child = new Child(1);"
     )
     let treeDescription = program.treeDescription
 
     #expect(treeDescription.contains("ClassDeclaration Child"))
     #expect(treeDescription.contains("SuperClass"))
-    #expect(treeDescription.contains("ThisExpression"))
+    #expect(treeDescription.contains("SelfExpression"))
     #expect(treeDescription.contains("SuperExpression"))
     #expect(treeDescription.contains("NewExpression"))
   }
@@ -1479,9 +1479,9 @@ private func newExpression(_ expression: Expression) throws -> NewExpression {
   return newExpression
 }
 
-private func requireThisExpression(_ expression: Expression) throws {
-  guard case .thisExpression = expression else {
-    Issue.record("Expected ThisExpression")
+private func requireSelfExpression(_ expression: Expression) throws {
+  guard case .selfExpression = expression else {
+    Issue.record("Expected SelfExpression")
     throw TestFailure()
   }
 }

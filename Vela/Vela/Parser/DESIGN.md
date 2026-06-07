@@ -110,21 +110,21 @@ position still means `BlockStatement`; dictionary literals are parsed in
 expression positions such as variable initializers and call arguments.
 
 The OOP additions follow the same model. `statementBuilder()` routes `class` to
-a class-declaration parser, while `primaryExpressionBuilder()` routes `this` and
+a class-declaration parser, while `primaryExpressionBuilder()` routes `self` and
 `new` to expression parsers:
 
 ```swift
 case .KEYWORD(keyword: "class"):
   return try .ClassDeclaration(classDeclarationStamentBuilder())
 
-case .KEYWORD(keyword: "this"):
-  return try thisExpressionBuilder()
+case .KEYWORD(keyword: "self"):
+  return try selfExpressionBuilder()
 
 case .KEYWORD(keyword: "new"):
   return try newExpressionBuilder()
 ```
 
-So class declarations are statements, and `this` / `new` are value-producing
+So class declarations are statements, and `self` / `new` are value-producing
 expressions.
 
 ## Precedence
@@ -590,9 +590,9 @@ The same split applies to OOP syntax. These are parser-valid forms:
 
 ```js
 class Point extends Shape {
-  def constructor(x, y) {
-    this.x = x;
-    this.y = y;
+  def init(x, y) {
+    self.x = x;
+    self.y = y;
   }
 }
 
@@ -601,5 +601,5 @@ let p = new Point(1, 2);
 
 The parser checks only that those tokens match the grammar. Later semantic or
 runtime phases must decide whether `Shape` exists, whether `Point` is
-constructible, what `this` means in the current scope, and what object allocation
+constructible, what `self` means in the current scope, and what object allocation
 actually does.

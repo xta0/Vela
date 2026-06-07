@@ -1,23 +1,23 @@
 //
-//  This.swift
+//  Self.swift
 //  ToyParser
 //
 //  Created by Tao Xu on 6/1/26.
 //
 
 extension Parser {
-  /// ThisExpression
-  ///  : 'this'
+  /// SelfExpression
+  ///  : 'self'
   ///  ;
   ///
   /// Examples:
-  /// `this`
-  /// `this.x`
-  /// `this["x"]`
-  func thisExpressionBuilder() throws -> Expression {
-    try eat(.KEYWORD(keyword: "this"))
-    let node = ThisExpression()
-    return .thisExpression(node)
+  /// `self`
+  /// `self.x`
+  /// `self["x"]`
+  func selfExpressionBuilder() throws -> Expression {
+    try eat(.KEYWORD(keyword: "self"))
+    let node = SelfExpression()
+    return .selfExpression(node)
   }
 
   /// SuperExpression

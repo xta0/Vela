@@ -34,8 +34,14 @@ struct NativeFunction {
   let call: ([EvalRuntimeValue]) throws(EvalRuntimeError) -> EvalRuntimeValue
 }
 
+/// Plain dictionaries use nil klass; class instances keep their runtime class.
 final class EvalRuntimeObject {
+  let klass: EvalRuntimeClass?
   var fields: [String: EvalRuntimeValue] = [:]
+
+  init(klass: EvalRuntimeClass? = nil) {
+    self.klass = klass
+  }
 }
 
 final class EvalRuntimeArray {

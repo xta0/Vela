@@ -60,6 +60,7 @@ extension EvalRuntimeValue {
     case let .object(object):
       return [
         "type": "object",
+        "class": jsonNullable(object.klass?.name),
         "fields": object.fields.mapValues { $0.jsonValue },
       ]
     case let .array(array):

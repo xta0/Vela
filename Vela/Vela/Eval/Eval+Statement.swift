@@ -33,8 +33,8 @@ extension Eval {
       throw .returnSignal(value)
     case let .Function(stmt):
       return try Eval.evaluateFunctionDeclarationStatement(stmt, in: env)
-    default:
-      throw .unimplemented(statement.type)
+    case let .ClassDeclaration(stmt):
+      return try Eval.evaluateClassDeclarationStatement(stmt, in: env)
     }
   }
 }
@@ -223,5 +223,45 @@ extension Eval {
     } else {
       return .null
     }
+  }
+}
+
+// MARK: Class Statement
+
+extension Eval {
+  static func evaluateClassDeclarationStatement(
+    _ stmt: ClassDeclarationStatement,
+    in env: EvalEnvironment
+  ) throws(EvalRuntimeError) -> EvalRuntimeValue {
+    // 1. Read the class name.
+    // 2. Reject inheritance for now.
+    // 3. Create a runtime class value.
+    // 4. Define it in the current environment.
+    // 5. Return null because declarations do not produce a user value.
+    guard case let .identifierExpression(identifier) = stmt.id else {
+      throw .internalError("Class declaration name must be an identifier")
+    }
+    if stmt.superClass != nil {
+      throw .unimplemented("class inheritance")
+    }
+
+    // collect class methods
+    var methods: [String: EvalRuntimeFunction] = [:]
+    for stmt in stmt.body.body {
+      guard case let .Function(functionStmt) = stmt else {
+        throw .invalidOperand("class body")
+      }
+      methods[functionStmt.name] = EvalRuntimeFunction(
+        name: functionStmt.name,
+        params: functionStmt.params,
+        body: functionStmt.body,
+        closure: env
+      )
+    }
+
+    let klass = EvalRuntimeClass(name: identifier.value, methods: methods)
+    env.define(identifier.value, .klass(klass))
+
+    return .null
   }
 }

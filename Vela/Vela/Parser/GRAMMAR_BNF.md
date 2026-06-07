@@ -85,7 +85,7 @@
 \bextends\b            return 'EXTENDS'
 \bsuper\b              return 'SUPER'
 \bnew\b                return 'NEW'
-\bthis\b               return 'THIS'
+\bself\b               return 'SELF'
 
 \w+                    return 'IDENTIFIER'
 
@@ -329,7 +329,7 @@ PrimaryExpression
   | ArrayLiteral
   | DictionaryLiteral
   | IDENTIFIER
-  | ThisExpression
+  | SelfExpression
   | NewExpression
   ;
 
@@ -374,8 +374,8 @@ DictionaryKey
   | STRING
   ;
 
-ThisExpression
-  : THIS
+SelfExpression
+  : SELF
   ;
 
 SuperExpression

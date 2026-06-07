@@ -33,7 +33,7 @@
 //    ├─ AssignmentExpression
 //    ├─ MemberExpression
 //    ├─ FuncCallExpression
-//    ├─ ThisExpression
+//    ├─ SelfExpression
 //    ├─ SuperExpression
 //    ├─ NewExpression
 //    ├─ ArrayLiteral
@@ -92,7 +92,7 @@ indirect enum Expression: ASTNode {
       return exp.type
     case let .funcCallExpression(exp):
       return exp.type
-    case let .thisExpression(exp):
+    case let .selfExpression(exp):
       return exp.type
     case let .superExpression(exp):
       return exp.type
@@ -116,7 +116,7 @@ indirect enum Expression: ASTNode {
   case unaryExpression(UnaryExpression)
   case memberExpression(MemberExpression)
   case funcCallExpression(FuncCallExpression)
-  case thisExpression(ThisExpression)
+  case selfExpression(SelfExpression)
   case superExpression(SuperExpression)
   case newExpression(NewExpression)
   case arrayLiteral(ArrayLiteral)
@@ -148,7 +148,7 @@ extension Expression: Encodable {
       try node.encode(to: encoder)
     case let .funcCallExpression(node):
       try node.encode(to: encoder)
-    case let .thisExpression(node):
+    case let .selfExpression(node):
       try node.encode(to: encoder)
     case let .superExpression(node):
       try node.encode(to: encoder)
@@ -232,10 +232,10 @@ struct FuncCallExpression: ASTNode, Encodable {
   let arguments: [Expression] // Identifier expressions
 }
 
-// MARK: This Expression
+// MARK: Self Expression
 
-struct ThisExpression: ASTNode, Encodable {
-  let type = "ThisExpression"
+struct SelfExpression: ASTNode, Encodable {
+  let type = "SelfExpression"
 }
 
 // MARK: Super Expression

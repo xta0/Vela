@@ -99,6 +99,6 @@ final class Tokenizer {
     "extends",
     "super",
     "new",
-    "this",
+    "self",
   ]
 }

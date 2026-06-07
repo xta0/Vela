@@ -14,7 +14,7 @@ extension Parser {
   ///   | ArrayLiteral
   ///   | DictionaryLiteral
   ///   | Identifier
-  ///   | ThisExpression
+  ///   | SelfExpression
   ///   | NewExpression
   ///   ;
   ///
@@ -26,7 +26,7 @@ extension Parser {
   /// `(1 + 2)`
   /// `[x, y + 1]`
   /// `{ "x": 1 }`
-  /// `this`
+  /// `self`
   /// `new Point(1, 2)`
   func primaryExpressionBuilder() throws -> Expression {
     if isLiteral() {
@@ -41,8 +41,8 @@ extension Parser {
       return try dictionaryLiteralBuilder()
     case .IDENTIFIER:
       return try identifierBuilder()
-    case .KEYWORD(keyword: "this"):
-      return try thisExpressionBuilder()
+    case .KEYWORD(keyword: "self"):
+      return try selfExpressionBuilder()
     case .KEYWORD(keyword: "new"):
       return try newExpressionBuilder()
     default:

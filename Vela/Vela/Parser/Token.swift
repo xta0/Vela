@@ -173,7 +173,7 @@ extension Token {
     TokenSpec(regex: /^\bextends\b/, type: .KEYWORD(keyword: "extends")),
     TokenSpec(regex: /^\bsuper\b/, type: .KEYWORD(keyword: "super")),
     TokenSpec(regex: /^\bnew\b/, type: .KEYWORD(keyword: "new")),
-    TokenSpec(regex: /^\bthis\b/, type: .KEYWORD(keyword: "this")),
+    TokenSpec(regex: /^\bself\b/, type: .KEYWORD(keyword: "self")),
 
     // identifiers (needs to checked after number):
     TokenSpec(regex: /^\w+/, type: .IDENTIFIER),

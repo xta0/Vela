@@ -35,6 +35,10 @@ struct EvalBuiltins {
       env.define(function.name, .nativeFunction(function))
     }
   }
+
+  func contains(_ name: String) -> Bool {
+    functions.contains { $0.name == name }
+  }
 }
 
 extension NativeFunction {

@@ -40,7 +40,11 @@ extension Eval {
     case let .memberExpression(node):
       return try evaluateMember(node, in: env)
     case let .funcCallExpression(node):
-      return try functionCall(node, in: env)
+      return try evaluateFunctionCall(node, in: env)
+    case let .newExpression(node):
+      return try evaluateNewExpression(node, in: env)
+    case .selfExpression:
+      return try env.lookup("self")
     default:
       throw .unimplemented(expression.type)
     }
@@ -271,7 +275,7 @@ extension Eval {
     // 3. Read array elements with out-of-bounds elements as null.
     switch try resolveMember(node, in: env) {
     case let .object(object, key):
-      return object.fields[key] ?? .null
+      return objectMemberValue(object, key)
     case let .array(array, index):
       return arrayElement(array, at: index)
     }
@@ -283,7 +287,6 @@ extension Eval {
     // 3. Resolve array receivers to integer indexes.
     // 4. Reject member access on unsupported receiver values.
     let receiver = try evaluateExpression(node.object, in: env)
-
     switch receiver {
     case let .object(object):
       return try .object(object, objectMemberKey(node, in: env))
@@ -314,6 +317,18 @@ extension Eval {
       throw .invalidOperand(".")
     }
     return property.value
+  }
+
+  private static func objectMemberValue(_ object: EvalRuntimeObject, _ key: String) -> EvalRuntimeValue {
+    if let field = object.fields[key] {
+      return field
+    }
+
+    if let method = object.klass?.methods[key] {
+      return .function(bind(method, to: object))
+    }
+
+    return .null
   }
 
   // MARK: array
@@ -358,33 +373,33 @@ extension Eval {
 
 extension Eval {
   /**
-    1. Add return propagation
-        - Add case returnSignal(EvalRuntimeValue) to EvalRuntimeError.
-        - In execute, handle .Return(stmt):
+   1. Add return propagation
+   - Add case returnSignal(EvalRuntimeValue) to EvalRuntimeError.
+   - In execute, handle .Return(stmt):
 
-       let value = try stmt.value.map { try Eval.evaluateExpression($0, in: env) } ?? .null
-       throw .returnSignal(value)
+   let value = try stmt.value.map { try Eval.evaluateExpression($0, in: env) } ?? .null
+   throw .returnSignal(value)
 
-    2. Add call expression evaluation
-        - In evaluateExpression, handle .funcCallExpression.
-        - Evaluate callee.
-        - Evaluate arguments left-to-right.
+   2. Add call expression evaluation
+   - In evaluateExpression, handle .funcCallExpression.
+   - Evaluate callee.
+   - Evaluate arguments left-to-right.
 
-    3. Call runtime functions
-        - For .function(function), check arguments.count == function.params.count.
-        - Create call env:
+   3. Call runtime functions
+   - For .function(function), check arguments.count == function.params.count.
+   - Create call env:
 
-       let callEnv = EvalEnvironment(parent: function.closure)
-        - Bind params to args.
-        - Execute body.
-        - Catch .returnSignal(value) and return value.
-        - If body finishes without return, return .null.
+   let callEnv = EvalEnvironment(parent: function.closure)
+   - Bind params to args.
+   - Execute body.
+   - Catch .returnSignal(value) and return value.
+   - If body finishes without return, return .null.
 
-    4. Native functions
-        - For .nativeFunction(native), check expectedArgumentCount if non-nil.
-        - Call native.call(arguments).
+   4. Native functions
+   - For .nativeFunction(native), check expectedArgumentCount if non-nil.
+   - Call native.call(arguments).
    */
-  static func functionCall(_ node: FuncCallExpression, in env: EvalEnvironment) throws(EvalRuntimeError) -> EvalRuntimeValue {
+  static func evaluateFunctionCall(_ node: FuncCallExpression, in env: EvalEnvironment) throws(EvalRuntimeError) -> EvalRuntimeValue {
     // 1. Evaluate the callee expression.
     // 2. Evaluate arguments from left to right.
     // 3. Dispatch to user-defined or native function call handling.
@@ -443,5 +458,51 @@ extension Eval {
     }
 
     return try function.call(args)
+  }
+}
+
+// MARK: `new` expression
+
+extension Eval {
+  static func evaluateNewExpression(_ node: NewExpression, in env: EvalEnvironment) throws(EvalRuntimeError) -> EvalRuntimeValue {
+    // 1. Evaluate the callee, e.g. Point in new Point().
+    // 2. Require it to be a class.
+    // 3. Evaluate initializer arguments from left to right.
+    // 4. Create an empty object instance linked to the class.
+    // 5. Call init with self bound to the new object when the class defines one.
+
+    let callee = try evaluateExpression(node.callee, in: env)
+    guard case let .klass(clz) = callee else {
+      throw .notCallable(callee)
+    }
+
+    var args: [EvalRuntimeValue] = []
+    for arg in node.arguments {
+      try args.append(evaluateExpression(arg, in: env))
+    }
+
+    let obj = EvalRuntimeObject(klass: clz)
+
+    if let initializer = clz.methods["init"] {
+      let boundInitializer = bind(initializer, to: obj)
+      _ = try call(boundInitializer, with: args)
+    } else if !args.isEmpty {
+      throw .arityMismatch(expected: 0, got: args.count)
+    }
+
+    return .object(obj)
+  }
+
+  /// Bind "self" to object in the method environment.
+  private static func bind(_ method: EvalRuntimeFunction, to object: EvalRuntimeObject) -> EvalRuntimeFunction {
+    let methodEnv = EvalEnvironment(parent: method.closure)
+    methodEnv.define("self", .object(object))
+
+    return EvalRuntimeFunction(
+      name: method.name,
+      params: method.params,
+      body: method.body,
+      closure: methodEnv
+    )
   }
 }

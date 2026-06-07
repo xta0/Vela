@@ -87,9 +87,22 @@ final class EvalEnvironment {
   }
 
   private var jsonValue: [String: Any] {
-    [
-      "values": values.mapValues { $0.jsonValue },
+    let builtinValues = values.filter { isBuiltin($0.key) }
+    let userValues = values.filter { !isBuiltin($0.key) }
+
+    var value: [String: Any] = [
+      "values": userValues.mapValues { $0.jsonValue },
       "children": children.map { $0.jsonValue },
     ]
+
+    if builtins != nil {
+      value["builtins"] = builtinValues.keys.sorted()
+    }
+
+    return value
+  }
+
+  private func isBuiltin(_ name: String) -> Bool {
+    builtins?.contains(name) ?? false
   }
 }

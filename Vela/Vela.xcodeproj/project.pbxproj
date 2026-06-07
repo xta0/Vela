@@ -20,7 +20,7 @@
 		452F84D62FCEA06600697B5E /* Parenthesize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84AF2FCEA06600697B5E /* Parenthesize.swift */; };
 		452F84D72FCEA06600697B5E /* Primary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84B02FCEA06600697B5E /* Primary.swift */; };
 		452F84D82FCEA06600697B5E /* Relational.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84B12FCEA06600697B5E /* Relational.swift */; };
-		452F84D92FCEA06600697B5E /* This.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84B22FCEA06600697B5E /* This.swift */; };
+		452F84D92FCEA06600697B5E /* Self.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84B22FCEA06600697B5E /* Self.swift */; };
 		452F84DA2FCEA06600697B5E /* Unary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84B32FCEA06600697B5E /* Unary.swift */; };
 		452F84DB2FCEA06600697B5E /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84B52FCEA06600697B5E /* Block.swift */; };
 		452F84DC2FCEA06600697B5E /* Class.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F84B62FCEA06600697B5E /* Class.swift */; };
@@ -90,7 +90,7 @@
 		452F84AF2FCEA06600697B5E /* Parenthesize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parenthesize.swift; sourceTree = "<group>"; };
 		452F84B02FCEA06600697B5E /* Primary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Primary.swift; sourceTree = "<group>"; };
 		452F84B12FCEA06600697B5E /* Relational.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Relational.swift; sourceTree = "<group>"; };
-		452F84B22FCEA06600697B5E /* This.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = This.swift; sourceTree = "<group>"; };
+		452F84B22FCEA06600697B5E /* Self.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Self.swift; sourceTree = "<group>"; };
 		452F84B32FCEA06600697B5E /* Unary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unary.swift; sourceTree = "<group>"; };
 		452F84B52FCEA06600697B5E /* Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
 		452F84B62FCEA06600697B5E /* Class.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Class.swift; sourceTree = "<group>"; };
@@ -197,7 +197,7 @@
 				452F84AF2FCEA06600697B5E /* Parenthesize.swift */,
 				452F84B02FCEA06600697B5E /* Primary.swift */,
 				452F84B12FCEA06600697B5E /* Relational.swift */,
-				452F84B22FCEA06600697B5E /* This.swift */,
+				452F84B22FCEA06600697B5E /* Self.swift */,
 				452F84B32FCEA06600697B5E /* Unary.swift */,
 			);
 			path = Expressions;
@@ -425,7 +425,7 @@
 				452F85012FCF000000697B5E /* DictionaryLiteral.swift in Sources */,
 				452F84D82FCEA06600697B5E /* Relational.swift in Sources */,
 				452F84F02FCEA08000697B5E /* Eval.swift in Sources */,
-				452F84D92FCEA06600697B5E /* This.swift in Sources */,
+				452F84D92FCEA06600697B5E /* Self.swift in Sources */,
 				452F84DA2FCEA06600697B5E /* Unary.swift in Sources */,
 				452F84DB2FCEA06600697B5E /* Block.swift in Sources */,
 				452F84DC2FCEA06600697B5E /* Class.swift in Sources */,

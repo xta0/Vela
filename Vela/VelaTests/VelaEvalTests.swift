@@ -470,6 +470,138 @@ struct VelaEvalTests {
     }
   }
 
+  @Test func evaluatesClassDeclaration() throws {
+    let klass = try klassValue(eval("""
+    class Point {}
+    Point;
+    """))
+
+    #expect(klass.name == "Point")
+    #expect(klass.superclass == nil)
+    #expect(klass.methods.isEmpty)
+  }
+
+  @Test func classDeclarationStoresMethods() throws {
+    let klass = try klassValue(eval("""
+    class Point {
+      def init(x) {}
+    }
+    Point;
+    """))
+    let initializer = try #require(klass.methods["init"])
+
+    #expect(initializer.name == "init")
+    #expect(initializer.params == ["x"])
+  }
+
+  @Test func evaluatesNewClassInstance() throws {
+    let object = try objectValue(eval("""
+    class Point {}
+    new Point();
+    """))
+
+    #expect(object.klass?.name == "Point")
+    #expect(object.fields.isEmpty)
+  }
+
+  @Test func newExpressionCallsInitWithSelfBoundToInstance() throws {
+    let object = try objectValue(eval("""
+    class Point {
+      def init(x, y) {
+        self.x = x;
+        self.y = y;
+      }
+    }
+    new Point(11, 12);
+    """))
+
+    #expect(object.klass?.name == "Point")
+    #expect(try numberValue(object.fields["x"] ?? .null) == 11)
+    #expect(try numberValue(object.fields["y"] ?? .null) == 12)
+  }
+
+  @Test func instanceMethodCallBindsSelfToReceiver() throws {
+    let result = try eval("""
+    class Point {
+      def init(x, y) {
+        self.x = x;
+        self.y = y;
+      }
+
+      def sum() {
+        return self.x + self.y;
+      }
+    }
+    let point = new Point(11, 12);
+    point.sum();
+    """)
+
+    #expect(try numberValue(result) == 23)
+  }
+
+  @Test func instanceFieldTakesPrecedenceOverClassMethod() throws {
+    let result = try eval("""
+    class Point {
+      def value() {
+        return 1;
+      }
+    }
+    let point = new Point();
+    point.value = 2;
+    point.value;
+    """)
+
+    #expect(try numberValue(result) == 2)
+  }
+
+  @Test func newExpressionThrowsNotCallableForNonClass() throws {
+    try expectRuntimeError(eval("new 1();")) { error in
+      guard case .notCallable = error else {
+        return false
+      }
+
+      return true
+    }
+  }
+
+  @Test func newExpressionThrowsArityMismatchForArgumentsWithoutInit() throws {
+    try expectRuntimeError(eval("""
+    class Point {}
+    new Point(1);
+    """)) { error in
+      guard case let .arityMismatch(expected, got) = error else {
+        return false
+      }
+
+      return expected == 0 && got == 1
+    }
+  }
+
+  @Test func newExpressionThrowsInitArityMismatch() throws {
+    try expectRuntimeError(eval("""
+    class Point {
+      def init(x, y) {}
+    }
+    new Point(1);
+    """)) { error in
+      guard case let .arityMismatch(expected, got) = error else {
+        return false
+      }
+
+      return expected == 2 && got == 1
+    }
+  }
+
+  @Test func selfOutsideBoundMethodThrowsUndefinedVariable() throws {
+    try expectRuntimeError(eval("self;")) { error in
+      guard case let .undefinedVariable(name) = error else {
+        return false
+      }
+
+      return name == "self"
+    }
+  }
+
   @Test func evaluatesNativePrintCall() throws {
     var output: [String] = []
 
@@ -783,6 +915,47 @@ struct VelaEvalTests {
 
     #expect(values["x"] as? Double == 1)
     #expect(childValues["y"] as? Double == 3)
+    #expect(json["builtins"] != nil)
+    #expect(firstChild["builtins"] == nil)
+  }
+
+  @Test func environmentJsonSeparatesBuiltinsFromValues() throws {
+    let env = EvalEnvironment()
+    let parser = Parser()
+    let program = try #require(try parser.parse("""
+    let x = 1;
+    let p = print;
+    """))
+
+    _ = try Eval.eval(program, in: env)
+
+    let json = try jsonObject(env.jsonDescription)
+    let values = try dictionaryValue(json["values"])
+    let builtins = try arrayValue(json["builtins"])
+    let printAlias = try dictionaryValue(values["p"])
+
+    #expect(values["x"] as? Double == 1)
+    #expect(values["print"] == nil)
+    #expect(builtins.compactMap { $0 as? String }.contains("print"))
+    #expect(printAlias["type"] as? String == "nativeFunction")
+  }
+
+  @Test func environmentJsonIncludesObjectClassName() throws {
+    let env = EvalEnvironment()
+    let parser = Parser()
+    let program = try #require(try parser.parse("""
+    class Point {}
+    let point = new Point();
+    """))
+
+    _ = try Eval.eval(program, in: env)
+
+    let json = try jsonObject(env.jsonDescription)
+    let values = try dictionaryValue(json["values"])
+    let point = try dictionaryValue(values["point"])
+
+    #expect(point["type"] as? String == "object")
+    #expect(point["class"] as? String == "Point")
   }
 
   @Test func evaluatesIfThenBranch() throws {
@@ -1195,6 +1368,15 @@ private func nativeFunctionValue(_ value: EvalRuntimeValue) throws -> NativeFunc
   }
 
   return function
+}
+
+private func klassValue(_ value: EvalRuntimeValue) throws -> EvalRuntimeClass {
+  guard case let .klass(klass) = value else {
+    Issue.record("Expected class")
+    throw EvalTestFailure()
+  }
+
+  return klass
 }
 
 private func requireNull(_ value: EvalRuntimeValue) throws {

@@ -153,14 +153,14 @@ extension Parser {
   class Shape {}
 
   class Point extends Shape {
-    def constructor(x, y) {
+    def init(x, y) {
       super(x, y);
-      this.x = x;
-      this["y"] = y;
+      self.x = x;
+      self["y"] = y;
     }
 
     def lengthSquared() {
-      return this.x * this.x + this["y"] * this["y"];
+      return self.x * self.x + self["y"] * self["y"];
     }
   }
 
