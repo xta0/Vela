@@ -12,6 +12,21 @@ import Testing
 private struct EvalTestFailure: Error {}
 
 struct VelaEvalTests {
+  @Test func evaluatesDefaultEditorExample() throws {
+    var output: [String] = []
+    let summary = try objectValue(eval(Parser.defaultExampleSource) {
+      output.append($0)
+    })
+
+    #expect(output == ["point origin 25"])
+    #expect(try numberValue(summary.fields["pointLength"] ?? .null) == 25)
+    #expect(try stringValue(summary.fields["inheritedLabel"] ?? .null) == "origin")
+    #expect(try stringValue(summary.fields["overriddenKind"] ?? .null) == "point")
+    #expect(try boolValue(summary.fields["hasStatus"] ?? .null) == true)
+    #expect(try numberValue(summary.fields["whileTotal"] ?? .null) == 8)
+    #expect(try numberValue(summary.fields["forTotal"] ?? .null) == 7)
+  }
+
   @Test func evaluatesNumericLiteral() throws {
     let result = try eval("42;")
 
@@ -481,6 +496,17 @@ struct VelaEvalTests {
     #expect(klass.methods.isEmpty)
   }
 
+  @Test func classDeclarationStoresSuperclass() throws {
+    let klass = try klassValue(eval("""
+    class Shape {}
+    class Point extends Shape {}
+    Point;
+    """))
+
+    #expect(klass.name == "Point")
+    #expect(klass.superclass?.name == "Shape")
+  }
+
   @Test func classDeclarationStoresMethods() throws {
     let klass = try klassValue(eval("""
     class Point {
@@ -539,6 +565,82 @@ struct VelaEvalTests {
     #expect(try numberValue(result) == 23)
   }
 
+  @Test func instanceMethodCanBeInheritedFromSuperclass() throws {
+    let result = try eval("""
+    class Shape {
+      def name() {
+        return "shape";
+      }
+    }
+
+    class Point extends Shape {}
+
+    let point = new Point();
+    point.name();
+    """)
+
+    #expect(try stringValue(result) == "shape")
+  }
+
+  @Test func subclassMethodOverridesSuperclassMethod() throws {
+    let result = try eval("""
+    class Shape {
+      def name() {
+        return "shape";
+      }
+    }
+
+    class Point extends Shape {
+      def name() {
+        return "point";
+      }
+    }
+
+    let point = new Point();
+    point.name();
+    """)
+
+    #expect(try stringValue(result) == "point")
+  }
+
+  @Test func inheritedMethodBindsSelfToSubclassInstance() throws {
+    let result = try eval("""
+    class Shape {
+      def label() {
+        return self.name;
+      }
+    }
+
+    class Point extends Shape {
+      def init(name) {
+        self.name = name;
+      }
+    }
+
+    let point = new Point("origin");
+    point.label();
+    """)
+
+    #expect(try stringValue(result) == "origin")
+  }
+
+  @Test func newExpressionCanCallInheritedInit() throws {
+    let object = try objectValue(eval("""
+    class Shape {
+      def init(name) {
+        self.name = name;
+      }
+    }
+
+    class Point extends Shape {}
+
+    new Point("origin");
+    """))
+
+    #expect(object.klass?.name == "Point")
+    #expect(try stringValue(object.fields["name"] ?? .null) == "origin")
+  }
+
   @Test func instanceFieldTakesPrecedenceOverClassMethod() throws {
     let result = try eval("""
     class Point {
@@ -552,6 +654,19 @@ struct VelaEvalTests {
     """)
 
     #expect(try numberValue(result) == 2)
+  }
+
+  @Test func classDeclarationThrowsInvalidOperandForNonClassSuperclass() throws {
+    try expectRuntimeError(eval("""
+    let Shape = 1;
+    class Point extends Shape {}
+    """)) { error in
+      guard case let .invalidOperand(operatorValue) = error else {
+        return false
+      }
+
+      return operatorValue == "extends"
+    }
   }
 
   @Test func newExpressionThrowsNotCallableForNonClass() throws {
@@ -1300,7 +1415,10 @@ private func eval(
   output: @escaping (String) -> Void = { _ in }
 ) throws -> EvalRuntimeValue {
   let parser = Parser()
-  let program = try #require(try parser.parse(source))
+  guard let program = try parser.parse(source) else {
+    print(parser.results)
+    throw EvalTestFailure()
+  }
   return try Eval.eval(program, in: EvalEnvironment(builtins: .standard(output: output)))
 }
 

@@ -1296,7 +1296,11 @@ struct VelaParserTests {
 private func parseProgram(_ input: String) throws -> Program {
   let parser = Parser()
   let program = try parser.parse(input)
-  return try #require(program)
+  guard let program else {
+    print(parser.results)
+    throw TestFailure()
+  }
+  return program
 }
 
 private func expressionStatementValue(_ statement: Statement) throws -> Expression {

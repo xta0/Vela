@@ -234,16 +234,16 @@ extension Eval {
     in env: EvalEnvironment
   ) throws(EvalRuntimeError) -> EvalRuntimeValue {
     // 1. Read the class name.
-    // 2. Reject inheritance for now.
-    // 3. Create a runtime class value.
-    // 4. Define it in the current environment.
-    // 5. Return null because declarations do not produce a user value.
+    // 2. Evaluate and validate the optional superclass.
+    // 3. Collect methods declared directly on the class.
+    // 4. Create a runtime class value.
+    // 5. Define it in the current environment.
+    // 6. Return null because declarations do not produce a user value.
     guard case let .identifierExpression(identifier) = stmt.id else {
       throw .internalError("Class declaration name must be an identifier")
     }
-    if stmt.superClass != nil {
-      throw .unimplemented("class inheritance")
-    }
+
+    let superclass = try evaluateSuperclass(stmt.superClass, in: env)
 
     // collect class methods
     var methods: [String: EvalRuntimeFunction] = [:]
@@ -259,9 +259,25 @@ extension Eval {
       )
     }
 
-    let klass = EvalRuntimeClass(name: identifier.value, methods: methods)
+    let klass = EvalRuntimeClass(name: identifier.value, superclass: superclass, methods: methods)
     env.define(identifier.value, .klass(klass))
 
     return .null
+  }
+
+  private static func evaluateSuperclass(
+    _ expression: Expression?,
+    in env: EvalEnvironment
+  ) throws(EvalRuntimeError) -> EvalRuntimeClass? {
+    guard let expression else {
+      return nil
+    }
+
+    let value = try evaluateExpression(expression, in: env)
+    guard case let .klass(superclass) = value else {
+      throw .invalidOperand("extends")
+    }
+
+    return superclass
   }
 }

@@ -66,4 +66,12 @@ final class EvalRuntimeClass {
     self.superclass = superclass
     self.methods = methods
   }
+
+  func findMethod(_ name: String) -> EvalRuntimeFunction? {
+    if let method = methods[name] {
+      return method
+    }
+
+    return superclass?.findMethod(name)
+  }
 }

@@ -100,73 +100,150 @@ final class Parser: ObservableObject {
 
 extension Parser {
   static let defaultExampleSource = #"""
-  // VelaParser grammar demo
+  // Vela executable language demo
   /*
-    Covers comments, literals, variables, blocks, conditionals, loops,
-    functions, classes, calls, member access, assignments, and precedence.
+    Covers comments, literals, variables, expressions, blocks, conditionals,
+    loops, functions, arrays, dictionaries, builtins, classes, self, and
+    inheritance. The final expression returns a summary object.
   */
 
   ;
 
-  let emptyValue;
-  let number = 42, text = "Hello world", singleQuoted = 'ok';
+  let emptyValue, number = 42, text = "Hello world", singleQuoted = 'ok';
   let flag = true, missing = null;
   let total = (1 + 2) * 3 - 4 / 2;
+  let negative = -total;
   let same = total == 7;
   let compare = total >= 3 && total != 0 || !false;
-  let callbackValue = getCallback()();
+  let shortCircuit = true || unknownName;
 
   {
-    let scoped = text[number];
-    scoped = scoped;
+    let scoped = total + number;
+    number = scoped - total;
   }
 
   if (compare) {
-    console.log(text, singleQuoted);
+    number += 1;
   } else {
-    console.log("fallback");
-  }
-
-  while (number > 0) {
-    console.log(number, text[number]);
     number -= 1;
   }
 
-  do {
-    total += 1;
-    total *= 2;
-    total /= 2;
-  } while (total <= 10);
+  let i = 0, whileTotal = 0;
+  while (i < 6) {
+    i += 1;
+    if (i == 2) {
+      continue;
+    }
+    if (i == 5) {
+      break;
+    }
+    whileTotal += i;
+  }
 
-  for (let i = 0; i < 3; i += 1) {
-    point[i] = i;
+  let doCount = 0;
+  do {
+    doCount += 1;
+  } while (doCount < 2);
+
+  let forTotal = 0;
+  for (let j = 0; j < 5; j += 1) {
+    if (j == 3) {
+      continue;
+    }
+    forTotal += j;
   }
 
   def noop() {
     return;
   }
 
-  def square(x) {
-    return x * x;
+  let bonus = 3;
+  def addBonus(x) {
+    return x + bonus;
   }
 
-  class Shape {}
+  def square(n) {
+    return n * n;
+  }
 
-  class Point extends Shape {
-    def init(x, y) {
-      super(x, y);
+  let numbers = [1, 2, 3];
+  append(numbers, 4);
+  numbers[0] += 10;
+  let lastNumber = pop(numbers);
+  let missingNumber = numbers[99];
+
+  let record = { name: "Vela", "count": 1 };
+  record.count += 1;
+  record["language"] = "toy";
+  set(record, "status", "ok");
+  let recordKeys = keys(record);
+  let hasStatus = has(record, "status");
+
+  class Named {
+    def label() {
+      return self.name;
+    }
+
+    def kind() {
+      return "named";
+    }
+  }
+
+  class Point extends Named {
+    def init(x, y, name) {
       self.x = x;
       self["y"] = y;
+      self.name = name;
     }
 
     def lengthSquared() {
       return self.x * self.x + self["y"] * self["y"];
     }
+
+    def kind() {
+      return "point";
+    }
   }
 
-  let point = new Geometry.Point(1, 2);
-  point.x = point.x + 1;
-  point["y"] = point.y + 2;
-  square(2);
+  let point = new Point(3, 4, "origin");
+  point.z = 12;
+  point["tag"] = "cartesian";
+  let inheritedLabel = point.label();
+  let overriddenKind = point.kind();
+  let printed = print("point", inheritedLabel, str(point.lengthSquared()));
+
+  let summary = {
+    empty: emptyValue,
+    flag: flag,
+    missing: missing,
+    text: text,
+    singleQuoted: singleQuoted,
+    total: total,
+    negative: negative,
+    same: same,
+    compare: compare,
+    shortCircuit: shortCircuit,
+    number: number,
+    whileTotal: whileTotal,
+    doCount: doCount,
+    forTotal: forTotal,
+    noReturn: noop(),
+    functionResult: addBonus(square(2)),
+    numbers: numbers,
+    lastNumber: lastNumber,
+    missingNumber: missingNumber,
+    record: record,
+    recordKeys: recordKeys,
+    hasStatus: hasStatus,
+    recordLength: len(record),
+    pointLength: point.lengthSquared(),
+    inheritedLabel: inheritedLabel,
+    overriddenKind: overriddenKind,
+    missingMember: point.missing,
+    pointType: type(point),
+    pointLengthText: str(point.lengthSquared()),
+    printed: printed
+  };
+  summary;
   """#
 }

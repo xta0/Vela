@@ -324,7 +324,7 @@ extension Eval {
       return field
     }
 
-    if let method = object.klass?.methods[key] {
+    if let method = object.klass?.findMethod(key) {
       return .function(bind(method, to: object))
     }
 
@@ -483,7 +483,7 @@ extension Eval {
 
     let obj = EvalRuntimeObject(klass: clz)
 
-    if let initializer = clz.methods["init"] {
+    if let initializer = clz.findMethod("init") {
       let boundInitializer = bind(initializer, to: obj)
       _ = try call(boundInitializer, with: args)
     } else if !args.isEmpty {
