@@ -8,6 +8,15 @@
 import Foundation
 
 extension EvalRuntimeValue {
+  var editorDisplayValue: String {
+    switch self {
+    case .object, .array:
+      return jsonInspectDescription ?? displayValue
+    default:
+      return displayValue
+    }
+  }
+
   var displayValue: String {
     switch self {
     case let .int(value):
@@ -30,6 +39,38 @@ extension EvalRuntimeValue {
       return "[\(array.elements.map { $0.displayValue }.joined(separator: ", "))]"
     case let .klass(klass):
       return "<class \(klass.name)>"
+    }
+  }
+
+  private var jsonInspectDescription: String? {
+    guard JSONSerialization.isValidJSONObject(jsonInspectValue),
+          let data = try? JSONSerialization.data(
+            withJSONObject: jsonInspectValue,
+            options: [.prettyPrinted, .sortedKeys]
+          )
+    else {
+      return nil
+    }
+
+    return String(data: data, encoding: .utf8)
+  }
+
+  private var jsonInspectValue: Any {
+    switch self {
+    case let .object(object):
+      if let klass = object.klass {
+        return [
+          "type": "object",
+          "class": klass.name,
+          "fields": object.fields.mapValues { $0.jsonInspectValue },
+        ]
+      }
+
+      return object.fields.mapValues { $0.jsonInspectValue }
+    case let .array(array):
+      return array.elements.map { $0.jsonInspectValue }
+    default:
+      return jsonValue
     }
   }
 

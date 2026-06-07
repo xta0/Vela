@@ -27,6 +27,17 @@ struct VelaEvalTests {
     #expect(try numberValue(summary.fields["forTotal"] ?? .null) == 7)
   }
 
+  @Test func editorDisplayFormatsDefaultEditorSummary() throws {
+    let display = try eval(Parser.defaultExampleSource).editorDisplayValue
+    let summary = try jsonObject(display)
+
+    #expect(summary["inheritedLabel"] as? String == "origin")
+    #expect(summary["overriddenKind"] as? String == "point")
+    #expect(summary["hasStatus"] as? Bool == true)
+    #expect(summary["pointLength"] as? Double == 25)
+    #expect(summary["numbers"] != nil)
+  }
+
   @Test func evaluatesNumericLiteral() throws {
     let result = try eval("42;")
 

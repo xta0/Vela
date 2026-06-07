@@ -59,7 +59,7 @@ struct ContentView: View {
     }
 
     do throws(EvalRuntimeError) {
-      evalResult = try Eval.eval(ast).displayValue
+      evalResult = try Eval.eval(ast).editorDisplayValue
     } catch {
       evalResult = "\(error)"
     }
